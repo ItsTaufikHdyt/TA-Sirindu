@@ -226,11 +226,11 @@ ANAK
             ];
         }
 
-        dd($bbu,$resultFuzzyBB_U);
+        //dd($bbu,$resultFuzzyBB_U);
 
         //******************************** FUZZY TB/U ****************************************//
 
-        return view('admin.anak.show', compact('anak'))->with('hasilx', $hasilx);
+        return view('admin.anak.show', compact('anak','bbu','resultFuzzyBB_U'))->with('hasilx', $hasilx);
     }
 
 
