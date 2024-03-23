@@ -60,10 +60,6 @@ Show Data Anak
             <td>{{$hasil['berat']}}</td>
         </tr>
         <tr>
-            <td>Indeks Massa Tubuh (IMT) / Umur</td>
-            <td>{{$hasil['imt']}}</td>
-        </tr>
-        <tr>
             <td>Berat Badan / Umur</td>
             <td>{{$hasil['bb']}}</td>
         </tr>
@@ -75,8 +71,11 @@ Show Data Anak
             <td>Berat Badan / Tinggi Badan</td>
             <td>{{$hasil['bt']}}</td>
         </tr>
+        <tr>
+            <td>Indeks Massa Tubuh (IMT) / Umur</td>
+            <td>{{$hasil['imt']}}</td>
+        </tr>
         @endforeach
-
     </table>
 </div>
 @endsection

@@ -149,15 +149,6 @@ function getZscore($x)
             $s4 = "Data Tidak Valid";
             // continue;
         }
-        // if ($berat < $bt_tb[0]->a4) {
-        //     $s4 = "Sangat Kurus";
-        // } elseif ($berat >= $bt_tb[0]->a4 && $berat < $bt_tb[0]->b4) {
-        //     $s4 = "Kurus";
-        // } elseif ($berat >= $bt_tb[0]->b4 && $berat <= $bt_tb[0]->c4) {
-        //     $s4 = "Normal";
-        // } else {
-        //     $s4 = "Gemuk";
-        // }
 
         $hasilx[$key] = array(
             //"tgl_kunjungan" => $tgl_kunjungan,
@@ -209,31 +200,49 @@ function getIMT_U($x)
 
 function getBB_U($x)
 {
+    $bbuData = [];
     foreach ($x as $key => $data) {
         $bb = $data->bb;
+        $tb = $data->tb;
         $jk = $data->jk;
         $umur = $data->bln;
-    }
-    $bbumedian = DB::table('z_score')
-        ->select('id', 'm1sd as a', 'sd as b', '1sd as c')
-        ->where([
-            'acuan' => $umur,
-            'jk' => $jk,
-            'jenis_tbl' => 2,
-        ])->get();
-    foreach ($bbumedian as $data) {
-        $a = $data->a;
-        $b = $data->b;
-        $c = $data->c;
-    }
 
-    if ($bb < $b) {
-        $bbu = ($bb - $b) / ($b - $a);
-    } elseif ($bb > $b) {
-        $bbu = ($bb - $b) / ($c - $b);
-    }
+        $bbumedian = DB::table('z_score')
+            ->select('id', 'm1sd as a', 'sd as b', '1sd as c')
+            ->where([
+                'acuan' => $umur,
+                'jk' => $jk,
+                'jenis_tbl' => 2,
+            ])->get();
+        foreach ($bbumedian as $data) {
+            $a = $data->a;
+            $b = $data->b;
+            $c = $data->c;
+        }
 
-    return $bbu;
+        if ($bb < $b) {
+            $bbu = ($bb - $b) / ($b - $a);
+            $a = $a;
+            $b = $b;
+            $c = null;
+        } elseif ($bb > $b) {
+            $bbu = ($bb - $b) / ($c - $b);
+            $a = null;
+            $b = $b;
+            $c = $c;
+        }
+
+        $bbuData[] = [
+            'bb' => $bb,
+            'tb' => $tb,
+            'bln' => $umur,
+            'a' => $a,
+            'b' => $b,
+            'c' => $c,
+            'bbu' => $bbu
+        ];
+    }
+    return $bbuData;
 }
 
 function getTB_U($x)
@@ -345,7 +354,7 @@ function fuzzyTurun($x, $a, $b)
         $hasil = 1;
     }
 
-    return 'tess';
+    return $hasil;
 }
 
 function fuzzySegitiga($x, $a, $b, $c)
@@ -366,10 +375,35 @@ function fuzzySegitiga($x, $a, $b, $c)
     return $hasil;
 }
 
+function fuzzyTrapesium($x, $a, $b, $c, $d)
+{
+    $a = $a;
+    $b = $b;
+    $c = $c;
+    $d = $d;
+    $x = $x;
+    $hasil = '';
+
+    if ($x <= $a) {
+        $hasil = 0;
+    } elseif ($x >= $a || $x <= $b) {
+        $hasil = ($x - $a) / ($b - $a);
+    } elseif ($x >= $b && $x <= $c) {
+        $hasil = 1;
+    } elseif ($x >= $c && $x <= $d) {
+        $hasil = ($d - $x) / ($d - $c);
+    } elseif ($x >= $d) {
+        $hasil = 0;
+    }
+
+    return $hasil;
+}
+
 function fuzzyBB_U($x, $y)
 {
     $bbu = $x;
     $result = [];
+    $dataResults = [];
     foreach ($y as $key => $data) {
         $name = $data->name;
         $a = $data->a;
@@ -387,15 +421,51 @@ function fuzzyBB_U($x, $y)
             'type' => $type
         ];
     }
+
     //Berat Badan Sangat Kurang
-    if ($result[0]['type'] = 1) {
-        return fuzzyNaik($bbu, $result[0]['a'], $result[0]['b']);
-    } elseif ($result[0]['type'] = 2) {
-        return fuzzyTurun($bbu, $result[0]['a'], $result[0]['b']);
-    } elseif ($result[0]['type'] = 2) {
-        return  fuzzySegitiga($bbu, $result[0]['a'], $result[0]['b'], $result[0]['c']);
+    if ($result[0]['type'] == 1) {
+        $BBSK = fuzzyNaik($bbu, $result[0]['a'], $result[0]['b']);
+    } elseif ($result[0]['type'] == 2) {
+        $BBSK = fuzzyTurun($bbu, $result[0]['a'], $result[0]['b']);
+    } elseif ($result[0]['type'] == 3) {
+        $BBSK =  fuzzySegitiga($bbu, $result[0]['a'], $result[0]['b'], $result[0]['c']);
+    } elseif ($result[0]['type'] == 4) {
+        $BBSK =  fuzzyTrapesium($bbu, $result[0]['a'], $result[0]['b'], $result[0]['c'], $result[0]['d']);
     }
+
     //Berat Badan Kurang
+    if ($result[1]['type'] == 1) {
+        $BBK = fuzzyNaik($bbu, $result[1]['a'], $result[1]['b']);
+    } elseif ($result[1]['type'] == 2) {
+        $BBK = fuzzyTurun($bbu, $result[1]['a'], $result[1]['b']);
+    } elseif ($result[1]['type'] == 3) {
+        $BBK =  fuzzySegitiga($bbu, $result[1]['a'], $result[1]['b'], $result[1]['c']);
+    } elseif ($result[1]['type'] == 4) {
+        $BBK =  fuzzyTrapesium($bbu, $result[1]['a'], $result[1]['b'], $result[1]['c'], $result[1]['d']);
+    }
+
     //Berat Badan Normal
+    if ($result[2]['type'] == 1) {
+        $BBN = fuzzyNaik($bbu, $result[2]['a'], $result[2]['b']);
+    } elseif ($result[2]['type'] == 2) {
+        $BBN = fuzzyTurun($bbu, $result[2]['a'], $result[2]['b']);
+    } elseif ($result[2]['type'] == 3) {
+        $BBN =  fuzzySegitiga($bbu, $result[2]['a'], $result[2]['b'], $result[2]['c']);
+    } elseif ($result[2]['type'] == 4) {
+        $BBN =  fuzzyTrapesium($bbu, $result[2]['a'], $result[2]['b'], $result[2]['c'], $result[2]['d']);
+    }
+
     //Risiko Berat Badan Lebih
+    if ($result[3]['type'] == 1) {
+        $RBBL = fuzzyNaik($bbu, $result[3]['a'], $result[3]['b']);
+    } elseif ($result[3]['type'] == 2) {
+        $RBBL = fuzzyTurun($bbu, $result[3]['a'], $result[3]['b']);
+    } elseif ($result[3]['type'] == 3) {
+        $RBBL =  fuzzySegitiga($bbu, $result[3]['a'], $result[3]['b'], $result[3]['c']);
+    } elseif ($result[3]['type'] == 4) {
+        $RBBL =  fuzzyTrapesium($bbu, $result[3]['a'], $result[3]['b'], $result[3]['c'], $result[3]['d']);
+    }
+
+    $dataResults = ['BBSK' => $BBSK, 'BBK' => $BBK, 'BBN' => $BBN, 'RBBL' => $RBBL];
+    return $dataResults;
 }

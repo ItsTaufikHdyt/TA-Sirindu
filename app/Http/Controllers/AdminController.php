@@ -92,7 +92,7 @@ ANAK
     public function getAnakAdmin()
     {
         $data = Anak::select('id', 'nama', 'nama_ibu', 'nama_ayah', 'jk', 'tempat_lahir', 'tgl_lahir')
-        ->where('id_puskesmas',Auth::user()->id_puskesmas);
+            ->where('id_puskesmas', Auth::user()->id_puskesmas);
         return DataTables::of($data)
             ->addIndexColumn()
             ->editColumn('edit', function ($data) {
@@ -170,36 +170,66 @@ ANAK
             ->get();
         //zscore
         $hasilx = getZscore($dataAnak);
+
+        //BB/U ->Median ->Simpangan Baku ->ZScore BB/U
         $bbu = getBB_U($dataAnak);
+        //TB/U ->Median ->Simpangan Baku ->ZScore TB/U
         $tbu = getTB_U($dataAnak);
+        //BB/TB ->Median ->Simpangan Baku ->ZScore BB/TB
         $bbtb = getBB_TB($dataAnak);
+        //IMT/U ->Median ->Simpangan Baku ->ZScore IMT/U
         $imtu = getIMT_U($dataAnak);
-        //himpunan fuzzy
+
+        //****************** himpunan fuzzy ******************
         //BB/U
         $fuzzySet1 =  DB::table('fuzzy')
-        ->select('name', 'a', 'b', 'c', 'd','type','fuzzy_set')
-        ->where('fuzzy_set', 1)
-        ->get();
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 1)
+            ->get();
         //TB/U PB/U
         $fuzzySet2 =  DB::table('fuzzy')
-        ->select('name', 'a', 'b', 'c', 'd','type','fuzzy_set')
-        ->where('fuzzy_set', 2)
-        ->get();
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 2)
+            ->get();
         //BB/TB BB/PB
         $fuzzySet3 =  DB::table('fuzzy')
-        ->select('name', 'a', 'b', 'c', 'd','type','fuzzy_set')
-        ->where('fuzzy_set', 3)
-        ->get();
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 3)
+            ->get();
         //IMT/U
         $fuzzySet4 =  DB::table('fuzzy')
-        ->select('name', 'a', 'b', 'c', 'd','type','fuzzy_set')
-        ->where('fuzzy_set', 4)
-        ->get();
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 4)
+            ->get();
 
+        // dd($bbu);
+        //******************************** FUZZY BB/U ****************************************//
         //Menghitung Derajat Fuzzy Ke Setiap Himpunan
-        $dataFuzzyBB_U = fuzzyBB_U($bbu,$fuzzySet1);
-        dd($dataFuzzyBB_U);
-  
+        $resultFuzzyBB_U = [];
+        foreach ($bbu as $key => $bbuValue) {
+
+            $dataFuzzyBB_U = fuzzyBB_U($bbuValue['bbu'], $fuzzySet1);   
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyBB_U);
+
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyBB_U);
+
+            // Menyimpan data tertinggi ke dalam array resultFuzzyBB_U
+            $resultFuzzyBB_U[] = [
+                'BBSK' => $dataFuzzyBB_U['BBSK'],
+                'BBK' => $dataFuzzyBB_U['BBK'],
+                'BBN' => $dataFuzzyBB_U['BBN'],
+                'RBBL' => $dataFuzzyBB_U['RBBL'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+
+        dd($bbu,$resultFuzzyBB_U);
+
+        //******************************** FUZZY TB/U ****************************************//
+
         return view('admin.anak.show', compact('anak'))->with('hasilx', $hasilx);
     }
 
@@ -645,17 +675,17 @@ ANAK
 
     public function fuzzy()
     {
-        $fuzzy1 = Fuzzy::where('fuzzy_set',1)->get();
-        $fuzzy2 = Fuzzy::where('fuzzy_set',2)->get();
-        $fuzzy3 = Fuzzy::where('fuzzy_set',3)->get();
-        $fuzzy4 = Fuzzy::where('fuzzy_set',4)->get();
+        $fuzzy1 = Fuzzy::where('fuzzy_set', 1)->get();
+        $fuzzy2 = Fuzzy::where('fuzzy_set', 2)->get();
+        $fuzzy3 = Fuzzy::where('fuzzy_set', 3)->get();
+        $fuzzy4 = Fuzzy::where('fuzzy_set', 4)->get();
 
-        return view('admin.fuzzy.index',compact('fuzzy1','fuzzy2','fuzzy3','fuzzy4'));
+        return view('admin.fuzzy.index', compact('fuzzy1', 'fuzzy2', 'fuzzy3', 'fuzzy4'));
     }
 
     public function storeFuzzy(Request $request)
     {
-      
+
         try {
             $this->fuzzyRepository->storeFuzzy($request);
             Alert::success('Himpunan Fuzzy', 'Berhasil Menambahkan Data Himpunan Fuzzy');
@@ -666,10 +696,10 @@ ANAK
         }
     }
 
-    public function updateFuzzy(Request $request,$id)
+    public function updateFuzzy(Request $request, $id)
     {
         try {
-            $this->fuzzyRepository->updateFuzzy($request,$id);
+            $this->fuzzyRepository->updateFuzzy($request, $id);
             Alert::success('Himpunan Fuzzy', 'Berhasil Mengupdate Data Himpunan Fuzzy');
             return redirect()->route('admin.fuzzy');
         } catch (\Throwable $e) {
@@ -687,7 +717,7 @@ ANAK
             return redirect()->route('admin.fuzzy');
         }
     }
-        // public function getAnakPosyandu()
+    // public function getAnakPosyandu()
     // {
     //     $data = Anak::select('id', 'nama', 'nama_ibu', 'nama_ayah', 'jk', 'tempat_lahir', 'tgl_lahir')
     //     ->where('id_posyandu',Auth::user()->id_posyandu);
@@ -750,7 +780,7 @@ ANAK
     //     $rt = Rt::where('id_posyandu', $id)->pluck('name', 'id');
     //     return response()->json($rt);
     // }
-    
+
     // public function getPosyanduAnak($id)
     // {
     //     $posyandu = Posyandu::where('id', $id)->pluck('name', 'id');
@@ -772,15 +802,15 @@ All Super Admin Controller
     {
         return view('admin.dashboard.super_admin');
     }
- /*------------------------------------------
+    /*------------------------------------------
 --------------------------------------------
 All Super Admin Controller
 --------------------------------------------
 --------------------------------------------*/
-public function adminHome()
-{
-    return view('admin.dashboard.admin');
-}
+    public function adminHome()
+    {
+        return view('admin.dashboard.admin');
+    }
     /*------------------------------------------
 --------------------------------------------
 All User Controller
