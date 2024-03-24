@@ -167,6 +167,7 @@ function getZscore($x)
 
 function getIMT_U($x)
 {
+    $imtuData = [];
     foreach ($x as $key => $data) {
         $tb = $data->tb;
         $bb = $data->bb;
@@ -174,28 +175,40 @@ function getIMT_U($x)
         $imt = $bb / ($tb * $tb);
         $umur = $data->bln;
         $var = $umur <= 24 ? 1 : 2;
-    }
-    $imtumedian = DB::table('z_score')
-        ->select('id', 'm1sd as a', 'sd as b', '1sd as c')
-        ->where([
-            'var' => $var,
-            'acuan' => $umur,
-            'jk' => $jk,
-            'jenis_tbl' => 1,
-        ])->get();
-    foreach ($imtumedian as $data) {
-        $a = $data->a;
-        $b = $data->b;
-        $c = $data->c;
+
+        $imtumedian = DB::table('z_score')
+            ->select('id', 'm1sd as a', 'sd as b', '1sd as c')
+            ->where([
+                'var' => $var,
+                'acuan' => $umur,
+                'jk' => $jk,
+                'jenis_tbl' => 1,
+            ])->get();
+        foreach ($imtumedian as $data) {
+            $a = $data->a;
+            $b = $data->b;
+            $c = $data->c;
+        }
+
+        if ($imt < $b) {
+            $imtu = ($imt - $b) / ($b - $a);
+        } elseif ($imt > $b) {
+            $imtu = ($imt - $b) / ($c - $b);
+        }
+
+        $imtuData[] = [
+            'bb' => $bb,
+            'tb' => $tb,
+            'bln' => $umur,
+            'a' => $a,
+            'b' => $b,
+            'c' => $c,
+            'imtu' => $imtu
+        ];
     }
 
-    if ($imt < $b) {
-        $imtu = ($imt - $b) / ($b - $a);
-    } elseif ($imt > $b) {
-        $imtu = ($imt - $b) / ($c - $b);
-    }
 
-    return $imtu;
+    return $imtuData;
 }
 
 function getBB_U($x)
@@ -247,44 +260,7 @@ function getBB_U($x)
 
 function getTB_U($x)
 {
-    foreach ($x as $key => $data) {
-        $posisi = $data->posisi;
-        $tb = $data->tb;
-        $jk = $data->jk;
-        $umur = $data->bln;
-        $var = $umur <= 24 ? 1 : 2;
-        if ($umur < 24 && $posisi == "H") {
-            $tb += 0.7;
-        } elseif ($umur >= 24 && $posisi == "L") {
-            $tb -= 0.7;
-        }
-        $tinggi = round($tb);
-    }
-    $tbumedian = DB::table('z_score')
-        ->select('id', 'm1sd as a', 'sd as b', '1sd as c')
-        ->where([
-            'var' => $var,
-            'acuan' => $umur,
-            'jk' => $jk,
-            'jenis_tbl' => 3,
-        ])->get();
-    foreach ($tbumedian as $data) {
-        $a = $data->a;
-        $b = $data->b;
-        $c = $data->c;
-    }
-
-    if ($tb < $b) {
-        $tbu = ($tb - $b) / ($b - $a);
-    } elseif ($tb > $b) {
-        $tbu = ($tb - $b) / ($c - $b);
-    }
-
-    return $tbu;
-}
-
-function getBB_TB($x)
-{
+    $tbuData = [];
     foreach ($x as $key => $data) {
         $posisi = $data->posisi;
         $bb = $data->bb;
@@ -298,29 +274,90 @@ function getBB_TB($x)
             $tb -= 0.7;
         }
         $tinggi = round($tb);
+
+        $tbumedian = DB::table('z_score')
+            ->select('id', 'm1sd as a', 'sd as b', '1sd as c')
+            ->where([
+                'var' => $var,
+                'acuan' => $umur,
+                'jk' => $jk,
+                'jenis_tbl' => 3,
+            ])->get();
+        foreach ($tbumedian as $data) {
+            $a = $data->a;
+            $b = $data->b;
+            $c = $data->c;
+        }
+
+        if ($tb < $b) {
+            $tbu = ($tb - $b) / ($b - $a);
+        } elseif ($tb > $b) {
+            $tbu = ($tb - $b) / ($c - $b);
+        }
+
+        $tbuData[] = [
+            'bb' => $bb,
+            'tb' => $tb,
+            'bln' => $umur,
+            'a' => $a,
+            'b' => $b,
+            'c' => $c,
+            'tbu' => $tbu
+        ];
     }
 
-    $bbtbmedian = DB::table('z_score')
-        ->select('id', 'm1sd as a', 'sd as b', '1sd as c')
-        ->where([
-            'var' => $var,
-            'acuan' => $tinggi,
-            'jk' => $jk,
-            'jenis_tbl' => 4,
-        ])->get();
 
-    foreach ($bbtbmedian as $data) {
-        $a = $data->a;
-        $b = $data->b;
-        $c = $data->c;
-    }
-    if ($bb < $b) {
-        $bbtb = ($bb - $b) / ($b - $a);
-    } elseif ($bb > $b) {
-        $bbtb = ($bb - $b) / ($c - $b);
+    return $tbuData;
+}
+
+function getBB_TB($x)
+{
+    $bbTbData = [];
+    foreach ($x as $key => $data) {
+        $posisi = $data->posisi;
+        $bb = $data->bb;
+        $tb = $data->tb;
+        $jk = $data->jk;
+        $umur = $data->bln;
+        $var = $umur <= 24 ? 1 : 2;
+        if ($umur < 24 && $posisi == "H") {
+            $tb += 0.7;
+        } elseif ($umur >= 24 && $posisi == "L") {
+            $tb -= 0.7;
+        }
+        $tinggi = round($tb);
+        $bbtbmedian = DB::table('z_score')
+            ->select('id', 'm1sd as a', 'sd as b', '1sd as c')
+            ->where([
+                'var' => $var,
+                'acuan' => $tinggi,
+                'jk' => $jk,
+                'jenis_tbl' => 4,
+            ])->get();
+
+        foreach ($bbtbmedian as $data) {
+            $a = $data->a;
+            $b = $data->b;
+            $c = $data->c;
+        }
+        if ($bb < $b) {
+            $bbtb = ($bb - $b) / ($b - $a);
+        } elseif ($bb > $b) {
+            $bbtb = ($bb - $b) / ($c - $b);
+        }
+
+        $bbTbData[] = [
+            'bb' => $bb,
+            'tb' => $tb,
+            'bln' => $umur,
+            'a' => $a,
+            'b' => $b,
+            'c' => $c,
+            'bbtb' => $bbtb
+        ];
     }
 
-    return $bbtb;
+    return $bbTbData;
 }
 
 function fuzzyNaik($x, $a, $b)
@@ -421,7 +458,7 @@ function fuzzyBB_U($x, $y)
             'type' => $type
         ];
     }
-
+    
     //Berat Badan Sangat Kurang
     if ($result[0]['type'] == 1) {
         $BBSK = fuzzyNaik($bbu, $result[0]['a'], $result[0]['b']);
@@ -467,5 +504,246 @@ function fuzzyBB_U($x, $y)
     }
 
     $dataResults = ['BBSK' => $BBSK, 'BBK' => $BBK, 'BBN' => $BBN, 'RBBL' => $RBBL];
+    return $dataResults;
+}
+
+function fuzzyTB_U($x, $y)
+{
+    $tbu = $x;
+    $result = [];
+    $dataResults = [];
+    foreach ($y as $key => $data) {
+        $name = $data->name;
+        $a = $data->a;
+        $b = $data->b;
+        $c = $data->c;
+        $d = $data->d;
+        $type = $data->type;
+
+        $result[$key] = [
+            'name' => $name,
+            'a' => $a,
+            'b' => $b,
+            'c' => $c,
+            'd' => $d,
+            'type' => $type
+        ];
+    }
+    //Sangat Pendek
+    if ($result[0]['type'] == 1) {
+        $SP = fuzzyNaik($tbu, $result[0]['a'], $result[0]['b']);
+    } elseif ($result[0]['type'] == 2) {
+        $SP = fuzzyTurun($tbu, $result[0]['a'], $result[0]['b']);
+    } elseif ($result[0]['type'] == 3) {
+        $SP =  fuzzySegitiga($tbu, $result[0]['a'], $result[0]['b'], $result[0]['c']);
+    } elseif ($result[0]['type'] == 4) {
+        $SP =  fuzzyTrapesium($tbu, $result[0]['a'], $result[0]['b'], $result[0]['c'], $result[0]['d']);
+    }
+    //Pendek
+    if ($result[1]['type'] == 1) {
+        $P = fuzzyNaik($tbu, $result[1]['a'], $result[1]['b']);
+    } elseif ($result[1]['type'] == 2) {
+        $P = fuzzyTurun($tbu, $result[1]['a'], $result[1]['b']);
+    } elseif ($result[1]['type'] == 3) {
+        $P =  fuzzySegitiga($tbu, $result[1]['a'], $result[1]['b'], $result[1]['c']);
+    } elseif ($result[1]['type'] == 4) {
+        $P =  fuzzyTrapesium($tbu, $result[1]['a'], $result[1]['b'], $result[1]['c'], $result[1]['d']);
+    }
+    //Normal
+    if ($result[2]['type'] == 1) {
+        $N = fuzzyNaik($tbu, $result[2]['a'], $result[2]['b']);
+    } elseif ($result[2]['type'] == 2) {
+        $N = fuzzyTurun($tbu, $result[2]['a'], $result[2]['b']);
+    } elseif ($result[2]['type'] == 3) {
+        $N =  fuzzySegitiga($tbu, $result[2]['a'], $result[2]['b'], $result[2]['c']);
+    } elseif ($result[2]['type'] == 4) {
+        $N =  fuzzyTrapesium($tbu, $result[2]['a'], $result[2]['b'], $result[2]['c'], $result[2]['d']);
+    }
+    //Tinggi
+    if ($result[3]['type'] == 1) {
+        $T = fuzzyNaik($tbu, $result[3]['a'], $result[3]['b']);
+    } elseif ($result[3]['type'] == 2) {
+        $T = fuzzyTurun($tbu, $result[3]['a'], $result[3]['b']);
+    } elseif ($result[3]['type'] == 3) {
+        $T =  fuzzySegitiga($tbu, $result[3]['a'], $result[3]['b'], $result[3]['c']);
+    } elseif ($result[3]['type'] == 4) {
+        $T =  fuzzyTrapesium($tbu, $result[3]['a'], $result[3]['b'], $result[3]['c'], $result[3]['d']);
+    }
+
+    $dataResults = ['SP' => $SP, 'P' => $P, 'N' => $N, 'T' => $T];
+    return $dataResults;
+}
+
+function fuzzyBB_TB($x, $y)
+{
+    $bb = $x;
+    $result = [];
+    $dataResults = [];
+    foreach ($y as $key => $data) {
+        $name = $data->name;
+        $a = $data->a;
+        $b = $data->b;
+        $c = $data->c;
+        $d = $data->d;
+        $type = $data->type;
+
+        $result[$key] = [
+            'name' => $name,
+            'a' => $a,
+            'b' => $b,
+            'c' => $c,
+            'd' => $d,
+            'type' => $type
+        ];
+    }
+    //Gizi Buruk
+    if ($result[0]['type'] == 1) {
+        $GBK = fuzzyNaik($bb, $result[0]['a'], $result[0]['b']);
+    } elseif ($result[0]['type'] == 2) {
+        $GBK = fuzzyTurun($bb, $result[0]['a'], $result[0]['b']);
+    } elseif ($result[0]['type'] == 3) {
+        $GBK =  fuzzySegitiga($bb, $result[0]['a'], $result[0]['b'], $result[0]['c']);
+    } elseif ($result[0]['type'] == 4) {
+        $GBK =  fuzzyTrapesium($bb, $result[0]['a'], $result[0]['b'], $result[0]['c'], $result[0]['d']);
+    }
+    //Gizi Kurang
+    if ($result[1]['type'] == 1) {
+        $GK = fuzzyNaik($bb, $result[1]['a'], $result[1]['b']);
+    } elseif ($result[1]['type'] == 2) {
+        $GK = fuzzyTurun($bb, $result[1]['a'], $result[1]['b']);
+    } elseif ($result[1]['type'] == 3) {
+        $GK =  fuzzySegitiga($bb, $result[1]['a'], $result[1]['b'], $result[1]['c']);
+    } elseif ($result[1]['type'] == 4) {
+        $GK =  fuzzyTrapesium($bb, $result[1]['a'], $result[1]['b'], $result[1]['c'], $result[1]['d']);
+    }
+    //Gizi Baik
+    if ($result[2]['type'] == 1) {
+        $GB = fuzzyNaik($bb, $result[2]['a'], $result[2]['b']);
+    } elseif ($result[2]['type'] == 2) {
+        $GB = fuzzyTurun($bb, $result[2]['a'], $result[2]['b']);
+    } elseif ($result[2]['type'] == 3) {
+        $GB =  fuzzySegitiga($bb, $result[2]['a'], $result[2]['b'], $result[2]['c']);
+    } elseif ($result[2]['type'] == 4) {
+        $GB =  fuzzyTrapesium($bb, $result[2]['a'], $result[2]['b'], $result[2]['c'], $result[2]['d']);
+    }
+    //Berisiko Gizi Lebih
+    if ($result[3]['type'] == 1) {
+        $BGL = fuzzyNaik($bb, $result[3]['a'], $result[3]['b']);
+    } elseif ($result[3]['type'] == 2) {
+        $BGL = fuzzyTurun($bb, $result[3]['a'], $result[3]['b']);
+    } elseif ($result[3]['type'] == 3) {
+        $BGL =  fuzzySegitiga($bb, $result[3]['a'], $result[3]['b'], $result[3]['c']);
+    } elseif ($result[3]['type'] == 4) {
+        $BGL =  fuzzyTrapesium($bb, $result[3]['a'], $result[3]['b'], $result[3]['c'], $result[3]['d']);
+    }
+    //Gizi Lebih
+    if ($result[4]['type'] == 1) {
+        $GL = fuzzyNaik($bb, $result[4]['a'], $result[4]['b']);
+    } elseif ($result[4]['type'] == 2) {
+        $GL = fuzzyTurun($bb, $result[4]['a'], $result[4]['b']);
+    } elseif ($result[4]['type'] == 3) {
+        $GL =  fuzzySegitiga($bb, $result[4]['a'], $result[4]['b'], $result[4]['c']);
+    } elseif ($result[4]['type'] == 4) {
+        $GL =  fuzzyTrapesium($bb, $result[4]['a'], $result[4]['b'], $result[4]['c'], $result[4]['d']);
+    }
+    //Obesitas
+    if ($result[5]['type'] == 1) {
+        $O = fuzzyNaik($bb, $result[5]['a'], $result[5]['b']);
+    } elseif ($result[5]['type'] == 2) {
+        $O = fuzzyTurun($bb, $result[5]['a'], $result[5]['b']);
+    } elseif ($result[5]['type'] == 3) {
+        $O =  fuzzySegitiga($bb, $result[5]['a'], $result[5]['b'], $result[5]['c']);
+    } elseif ($result[5]['type'] == 4) {
+        $O =  fuzzyTrapesium($bb, $result[5]['a'], $result[5]['b'], $result[5]['c'], $result[5]['d']);
+    }
+
+    $dataResults = ['GBK' => $GBK, 'GK' => $GK, 'GB' => $GB, 'BGL' => $BGL, 'GL' => $GL, 'O' => $O];
+    return $dataResults;
+}
+
+function fuzzyimt_u($x, $y)
+{
+    $imt = $x;
+    $result = [];
+    $dataResults = [];
+    foreach ($y as $key => $data) {
+        $name = $data->name;
+        $a = $data->a;
+        $b = $data->b;
+        $c = $data->c;
+        $d = $data->d;
+        $type = $data->type;
+
+        $result[$key] = [
+            'name' => $name,
+            'a' => $a,
+            'b' => $b,
+            'c' => $c,
+            'd' => $d,
+            'type' => $type
+        ];
+    }
+    //Gizi Buruk
+    if ($result[0]['type'] == 1) {
+        $GBK = fuzzyNaik($imt, $result[0]['a'], $result[0]['b']);
+    } elseif ($result[0]['type'] == 2) {
+        $GBK = fuzzyTurun($imt, $result[0]['a'], $result[0]['b']);
+    } elseif ($result[0]['type'] == 3) {
+        $GBK =  fuzzySegitiga($imt, $result[0]['a'], $result[0]['b'], $result[0]['c']);
+    } elseif ($result[0]['type'] == 4) {
+        $GBK =  fuzzyTrapesium($imt, $result[0]['a'], $result[0]['b'], $result[0]['c'], $result[0]['d']);
+    }
+    //Gizi Kurang
+    if ($result[1]['type'] == 1) {
+        $GK = fuzzyNaik($imt, $result[1]['a'], $result[1]['b']);
+    } elseif ($result[1]['type'] == 2) {
+        $GK = fuzzyTurun($imt, $result[1]['a'], $result[1]['b']);
+    } elseif ($result[1]['type'] == 3) {
+        $GK =  fuzzySegitiga($imt, $result[1]['a'], $result[1]['b'], $result[1]['c']);
+    } elseif ($result[1]['type'] == 4) {
+        $GK =  fuzzyTrapesium($imt, $result[1]['a'], $result[1]['b'], $result[1]['c'], $result[1]['d']);
+    }
+    //Gizi Baik
+    if ($result[2]['type'] == 1) {
+        $GB = fuzzyNaik($imt, $result[2]['a'], $result[2]['b']);
+    } elseif ($result[2]['type'] == 2) {
+        $GB = fuzzyTurun($imt, $result[2]['a'], $result[2]['b']);
+    } elseif ($result[2]['type'] == 3) {
+        $GB =  fuzzySegitiga($imt, $result[2]['a'], $result[2]['b'], $result[2]['c']);
+    } elseif ($result[2]['type'] == 4) {
+        $GB =  fuzzyTrapesium($imt, $result[2]['a'], $result[2]['b'], $result[2]['c'], $result[2]['d']);
+    }
+    //Berisiko Gizi Lebih
+    if ($result[3]['type'] == 1) {
+        $BGL = fuzzyNaik($imt, $result[3]['a'], $result[3]['b']);
+    } elseif ($result[3]['type'] == 2) {
+        $BGL = fuzzyTurun($imt, $result[3]['a'], $result[3]['b']);
+    } elseif ($result[3]['type'] == 3) {
+        $BGL =  fuzzySegitiga($imt, $result[3]['a'], $result[3]['b'], $result[3]['c']);
+    } elseif ($result[3]['type'] == 4) {
+        $BGL =  fuzzyTrapesium($imt, $result[3]['a'], $result[3]['b'], $result[3]['c'], $result[3]['d']);
+    }
+    //Gizi Lebih
+    if ($result[4]['type'] == 1) {
+        $GL = fuzzyNaik($imt, $result[4]['a'], $result[4]['b']);
+    } elseif ($result[4]['type'] == 2) {
+        $GL = fuzzyTurun($imt, $result[4]['a'], $result[4]['b']);
+    } elseif ($result[4]['type'] == 3) {
+        $GL =  fuzzySegitiga($imt, $result[4]['a'], $result[4]['b'], $result[4]['c']);
+    } elseif ($result[4]['type'] == 4) {
+        $GL =  fuzzyTrapesium($imt, $result[4]['a'], $result[4]['b'], $result[4]['c'], $result[4]['d']);
+    }
+    //Obesitas
+    if ($result[5]['type'] == 1) {
+        $O = fuzzyNaik($imt, $result[5]['a'], $result[5]['b']);
+    } elseif ($result[5]['type'] == 2) {
+        $O = fuzzyTurun($imt, $result[5]['a'], $result[5]['b']);
+    } elseif ($result[5]['type'] == 3) {
+        $O =  fuzzySegitiga($imt, $result[5]['a'], $result[5]['b'], $result[5]['c']);
+    } elseif ($result[5]['type'] == 4) {
+        $O =  fuzzyTrapesium($imt, $result[5]['a'], $result[5]['b'], $result[5]['c'], $result[5]['d']);
+    }
+
+    $dataResults = ['GBK' => $GBK, 'GK' => $GK, 'GB' => $GB, 'BGL' => $BGL, 'GL' => $GL, 'O' => $O];
     return $dataResults;
 }
