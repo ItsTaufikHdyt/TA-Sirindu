@@ -25,10 +25,6 @@ class User extends Authenticatable
         'email',
         'password',
         'type',
-        'id_kec',
-        'id_kel',
-        'id_puskesmas',
-        'id_posyandu',
     ];
 
     /**

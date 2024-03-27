@@ -27,8 +27,7 @@
                 </div>
             </div>
             <div class="footer-wrap pd-20 mb-20 card-box">
-            Si Rindu © 2024 | Cyber Creative Team | Diskominfo Kota Bontang
-            </div>
+           Sistem Pendukung Keputusan © 2024 
         </div>
     </div>
     @section('scripts')

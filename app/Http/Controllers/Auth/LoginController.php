@@ -54,9 +54,7 @@ class LoginController extends Controller
                 return redirect()->route('super.admin.home');
             } else if (auth()->user()->type == 'admin') {
                 return redirect()->route('admin.home');
-            } else {
-                return redirect()->route('admin.posyandu.home');
-            }
+            } 
         } else {
             return redirect()->route('login')
                 ->with('error', 'Email-Address And Password Are Wrong.');

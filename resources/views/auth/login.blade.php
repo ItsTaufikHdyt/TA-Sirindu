@@ -1,13 +1,13 @@
 @extends('admin::layouts.login')
 @section('title')
-Si Rindu
+
 @endsection
 @section('content')
 <div class="login-header box-shadow">
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <div class="brand-logo">
             <a href="#">
-                <img src="{{asset('logo/Sirindu-black.png')}}" alt="">
+                {{-- <img src="{{asset('logo/Sirindu-black.png')}}" alt=""> --}}
             </a>
         </div>
         <div class="login-menu">
@@ -40,7 +40,7 @@ Si Rindu
                     </div>
                     @endif
                     <div class="login-title">
-                        <h2 class="text-center text-primary">Login To Si Rindu</h2>
+                        <h2 class="text-center text-primary">Login</h2>
                     </div>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
