@@ -97,11 +97,3 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin/')->group(function () {
     
 });
 
-/*------------------------------------------
---------------------------------------------
-All Admin Posyandu Routes List
---------------------------------------------
---------------------------------------------*/
-Route::middleware(['auth', 'user-access:posyandu'])->prefix('admin-posyandu/')->group(function () {
-    Route::get('home', [App\Http\Controllers\AdminController::class, 'adminPosyanduHome'])->name('admin.posyandu.home');
-});

@@ -14,10 +14,10 @@ Anak
 @section('content')
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-      Data Anak
-      <a href="{{route('admin.createAnak')}}" class="btn btn-primary">
-        <font color="white"> <i class="fa fa-plus-circle" aria-hidden="true"></i> Tambah Data</font>
-    </a>
+        Data Anak
+        <a href="{{route('admin.createAnak')}}" class="btn btn-primary">
+            <font color="white"> <i class="fa fa-plus-circle" aria-hidden="true"></i> Tambah Data</font>
+        </a>
     </div>
     <div class="card-body">
         @if (Auth::user()->type == 'super-admin')
@@ -25,7 +25,7 @@ Anak
         <div class="table-responsive">
             <table id="tabel-anak" class="table table-striped">
                 <thead>
-                    <tr>               
+                    <tr>
                         <th scope="col">Nama</th>
                         <th scope="col">Nama Ibu</th>
                         <th scope="col">Nama Ayah</th>
@@ -41,7 +41,7 @@ Anak
         <div class="table-responsive">
             <table id="tabel-anak-adm" class="table table-striped">
                 <thead>
-                    <tr>               
+                    <tr>
                         <th scope="col">Nama</th>
                         <th scope="col">Nama Ibu</th>
                         <th scope="col">Nama Ayah</th>
@@ -55,7 +55,7 @@ Anak
         </div>
         @endif
     </div>
-  </div>
+</div>
 @endsection
 @section('custom_scripts')
 <script type="text/javascript">
@@ -163,20 +163,8 @@ Anak
             ajax: "{{ route('admin.getAnakAdm') }}",
             columns: [
                 {
-                    data: 'no_kk',
-                    name: 'no_kk',
-                },
-                {
-                    data: 'nik',
-                    name: 'nik',
-                },
-                {
                     data: 'nama',
                     name: 'nama',
-                },
-                {
-                    data: 'nik_ortu',
-                    name: 'nik_ortu',
                 },
                 {
                     data: 'nama_ibu',
@@ -197,10 +185,10 @@ Anak
                     name: 'delete',
                     orderable: false,
                     searchable: false
-                }
+                },
             ],
             columnDefs: [{
-                targets: 5,
+                targets: 3,
                 function(data, type, row) {
                     return data.substr(0, 50);
                 }
@@ -262,60 +250,6 @@ Anak
         });
 
     }
-
-    $(function() {
-        var table = $('#tabel-anak-ps').DataTable({
-            responsive: true,
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('admin.getAnakPs') }}",
-            columns: [
-                {
-                    data: 'no_kk',
-                    name: 'no_kk',
-                },
-                {
-                    data: 'nik',
-                    name: 'nik',
-                },
-                {
-                    data: 'nama',
-                    name: 'nama',
-                },
-                {
-                    data: 'nik_ortu',
-                    name: 'nik_ortu',
-                },
-                {
-                    data: 'nama_ibu',
-                    name: 'nama_ibu',
-                },
-                {
-                    data: 'nama_ayah',
-                    name: 'nama_ayah',
-                },
-                {
-                    data: 'edit',
-                    name: 'edit',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'delete',
-                    name: 'delete',
-                    orderable: false,
-                    searchable: false
-                }
-            ],
-            columnDefs: [{
-                targets: 5,
-                function(data, type, row) {
-                    return data.substr(0, 50);
-                }
-            }]
-        });
-
-    });
 
     //--------------Fungsi Delete ------------
     function deleteItemAnak(e) {

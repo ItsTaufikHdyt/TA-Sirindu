@@ -24,14 +24,14 @@ class AnakRepository implements AnakRepositoryInterface
     }
 
     public function storeAnak($request)
-    {
-        $lahir = strtotime($request->tgl_lahir);
-        $now = strtotime(Carbon::now());
-        $y1 = date('Y', $lahir);
-        $y2 = date('Y', $now);
-        $m1 = date('m', $lahir);
-        $m2 = date('m', $now);
-        $umur = (($y2 - $y1) * 12) + ($m2 - $m1);
+     {
+    //     $lahir = strtotime($request->tgl_lahir);
+    //     $now = strtotime(Carbon::now());
+    //     $y1 = date('Y', $lahir);
+    //     $y2 = date('Y', $now);
+    //     $m1 = date('m', $lahir);
+    //     $m2 = date('m', $now);
+    // $umur = (($y2 - $y1) * 12) + ($m2 - $m1);
 
         $anak_baru = Anak::create([
             'nama' => $request->nama,
@@ -45,7 +45,7 @@ class AnakRepository implements AnakRepositoryInterface
 
         DataAnak::create([
             'id_anak' => $anak_baru->id,
-            'bln' => $umur,
+            'bln' => $request->bln,
             'posisi' => 'L',
             'tb' => $request->tb,
             'bb' => $request->bb,
@@ -55,13 +55,13 @@ class AnakRepository implements AnakRepositoryInterface
 
     public function updateAnak($request, $id)
     {
-        $lahir = strtotime($request->tgl_lahir);
-        $now = strtotime(Carbon::now());
-        $y1 = date('Y', $lahir);
-        $y2 = date('Y', $now);
-        $m1 = date('m', $lahir);
-        $m2 = date('m', $now);
-        $umur = (($y2 - $y1) * 12) + ($m2 - $m1);
+        // $lahir = strtotime($request->tgl_lahir);
+        // $now = strtotime(Carbon::now());
+        // $y1 = date('Y', $lahir);
+        // $y2 = date('Y', $now);
+        // $m1 = date('m', $lahir);
+        // $m2 = date('m', $now);
+        // $umur = (($y2 - $y1) * 12) + ($m2 - $m1);
         $anak = Anak::find($id);
         $dt = DataAnak::where('id_anak', $id)->first();
         if ($request->id_kec == null) {
@@ -75,7 +75,7 @@ class AnakRepository implements AnakRepositoryInterface
                 'alamat' => $request->alamat
             ]);
             $dt->update([
-                'bln' => $umur,
+                'bln' => $request->bln,
                 'posisi' => 'L',
                 'tb' => $request->tb,
                 'bb' => $request->bb,
@@ -92,7 +92,7 @@ class AnakRepository implements AnakRepositoryInterface
                 'alamat' => $request->alamat
             ]);
             $dt->update([
-                'bln' => $umur,
+                'bln' => $request->bln,
                 'posisi' => 'L',
                 'tb' => $request->tb,
                 'bb' => $request->bb,

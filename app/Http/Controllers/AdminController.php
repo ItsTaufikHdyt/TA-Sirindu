@@ -91,8 +91,7 @@ ANAK
 
     public function getAnakAdmin()
     {
-        $data = Anak::select('id', 'nama', 'nama_ibu', 'nama_ayah', 'jk', 'tempat_lahir', 'tgl_lahir')
-            ->where('id_puskesmas', Auth::user()->id_puskesmas);
+        $data = Anak::select('id', 'nama', 'nama_ibu', 'nama_ayah', 'jk', 'tempat_lahir', 'tgl_lahir');
         return DataTables::of($data)
             ->addIndexColumn()
             ->editColumn('edit', function ($data) {

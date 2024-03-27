@@ -71,13 +71,19 @@ Anak
         </div>
         <div class="col-md-4 col-sm-12">
             <div class="form-group">
-                <label>Tinggi Badan Lahir <font color="red">* gunakan titik (.) untuk koma</font></label>
+                <label>Umur (Bulan) <font color="red">* gunakan titik (.) untuk koma</font></label>
+                <input type="text" name="bln" class="form-control" require>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label>Tinggi Badan <font color="red">* gunakan titik (.) untuk koma</font></label>
                 <input type="text" name="tb" class="form-control" require>
             </div>
         </div>
         <div class="col-md-4 col-sm-12">
             <div class="form-group">
-                <label>Berat Badan Lahir <font color="red">* gunakan titik (.) untuk koma</font></label>
+                <label>Berat Badan <font color="red">* gunakan titik (.) untuk koma</font></label>
                 <input type="text" name="bb" class="form-control" require>
             </div>
         </div>

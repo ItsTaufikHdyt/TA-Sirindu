@@ -32,8 +32,8 @@ Data Anak
             <div class="form-group">
                 <label>Posisi<font color="red">*</font></label>
                 <select name="posisi" class="form-control" require>
-                    <option value="H">H</option>
-                    <option value="L">L</option>
+                    <option value="H">High (Berdiri)</option>
+                    <option value="L">Low (Berbaring)</option>
                 </select>
             </div>
         </div>
