@@ -11,4 +11,5 @@ class Fuzzy extends Model
 
     protected $table = 'fuzzy';
     protected $guarded = [];
+    public $timestamps = false;
 }

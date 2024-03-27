@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('jenis_tbl')->default('0');
             $table->double('acuan')->default('0');
-            $table->integer('jk')->default('1')->comment('jenis kelamin:1lk;2pr');
-            $table->integer('var')->default('0')->comment('variasi cara pengukuran acuan');
+            $table->tinyInteger('jk')->default('1')->comment('jenis kelamin:1lk;2pr');
+            $table->tinyInteger('var')->default('0')->comment('variasi cara pengukuran acuan');
             $table->double('m3sd')->default(null);
             $table->double('m2sd')->default(null);
             $table->double('m1sd')->default(null);

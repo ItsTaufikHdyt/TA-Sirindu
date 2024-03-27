@@ -15,13 +15,12 @@ return new class extends Migration
     {
         Schema::create('data_anak', function (Blueprint $table) {
             $table->id();
-            $table->uuid('id_anak');
-            $table->integer('bln');
+            $table->uuid('id_anak',32);
+            $table->tinyInteger('bln');
             $table->string('posisi');
             $table->float('tb');
             $table->float('bb');
-            $table->uuid('id_user');
-            $table->timestamps();
+            $table->uuid('id_user',32);
             $table->foreign('id_anak')
                   ->references('id')->on('anak')
                   ->onDelete('cascade');

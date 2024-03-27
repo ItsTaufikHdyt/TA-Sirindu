@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('fuzzy', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name',100);
             $table->float('a')->nullable();
             $table->float('b')->nullable();
             $table->float('c')->nullable();
             $table->float('d')->nullable();
-            $table->integer('type'); //1. naik 2. turun 3. segitiga 4.trapesium
-            $table->integer('fuzzy_set');
-            $table->timestamps();
+            $table->tinyInteger('type'); //1. naik 2. turun 3. segitiga 4.trapesium
+            $table->tinyInteger('fuzzy_set');
+            // $table->timestamps();
         });
     }
 

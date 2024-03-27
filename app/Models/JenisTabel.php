@@ -10,4 +10,5 @@ class JenisTabel extends Model
     use HasFactory;
     protected $table = 'jenis_tabel';
     protected $guarded = [];
+    public $timestamps = false;
 }

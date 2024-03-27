@@ -10,6 +10,7 @@ class DataAnak extends Model
     use HasFactory;
     protected $table = 'data_anak';
     protected $guarded = [];
+    public $timestamps = false;
 
     public function anak()
     {

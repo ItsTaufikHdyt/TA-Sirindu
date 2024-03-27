@@ -15,8 +15,7 @@ return new class extends Migration
     {
         Schema::create('jenis_tabel', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_tabel');
-            $table->timestamps();
+            $table->string('nama_tabel',50);
         });
     }
 

@@ -39,22 +39,22 @@
                     <input type="hidden" name="idx" id="idx" value="{{$data->id}}">
                     <div class="form-group" id="ax{{$data->id}}">
                         <label>Domain (a)</label>
-                        <input name="a"  class="form-control" type="number" value="{{$data->a}}" placeholder="a">
+                        <input name="a"  class="form-control" type="text" value="{{$data->a}}" placeholder="a">
                         @error('a') <span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group" id="bx{{$data->id}}">
                         <label>Domain (b)</label>
-                        <input name="b"  class="form-control" type="number" value="{{$data->b}}" placeholder="b">
+                        <input name="b"  class="form-control" type="text" value="{{$data->b}}" placeholder="b">
                         @error('b') <span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group" id="cx{{$data->id}}">
                         <label>Domain (c)</label>
-                        <input name="c"  class="form-control" type="number" value="{{$data->c}}" placeholder="c">
+                        <input name="c"  class="form-control" type="text" value="{{$data->c}}" placeholder="c">
                         @error('c') <span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group" id="dx{{$data->id}}">
                         <label>Domain (d)</label>
-                        <input name="d"  class="form-control" type="number" value="{{$data->d}}" placeholder="d">
+                        <input name="d"  class="form-control" type="text" value="{{$data->d}}" placeholder="d">
                         @error('d') <span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                 </div>
