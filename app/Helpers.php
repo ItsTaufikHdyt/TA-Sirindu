@@ -340,6 +340,7 @@ function getBB_TB($x)
             $b = $data->b;
             $c = $data->c;
         }
+      
         if ($bb < $b) {
             $bbtb = ($bb - $b) / ($b - $a);
         } elseif ($bb > $b) {

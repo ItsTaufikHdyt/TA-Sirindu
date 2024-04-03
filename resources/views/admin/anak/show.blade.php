@@ -82,9 +82,15 @@ Show Data Anak
     </div>
     <div class="col">
         @foreach ($bbu as $index => $bbuData)
+        <div class="py-2 my-1 text-center position-relative mx-2">
+            <div class="position-absolute w-100 top-50 start-50 translate-middle" style="z-index: 2">
+                <span class="d-inline-block bg-white px-2 text-muted">Bulan {{$bbuData['bln']}} </span>
+            </div>
+            <div class="position-absolute w-100 top-50 start-0 border-muted border-top"></div>
+        </div>
         @if(isset($resultFuzzyBB_U[$index]))
         @php $fuzzyData = $resultFuzzyBB_U[$index]; @endphp
-        <div class="card mb-4">
+        <div class="card mb-4 mt-4 d-flex align-items-stretch">
             <div class="card-header">
                 Nilai Z-Score Bulan {{$bbuData['bln']}}
             </div>
@@ -154,152 +160,160 @@ Show Data Anak
             </div>
         </div>
         <div class="row mb-4">
-            <div class="card">
-                <div class="card-header">
-                    Indeks BB/U Bulan {{$bbuData['bln']}}
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Berat Badan Sangat Kurang (severely
-                                    underweight)</label>
-                                <input type="text" value="{{$fuzzyData['BBSK']}}" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Berat Badan Kurang (underweight)</label>
-                                <input type="text" value="{{$fuzzyData['BBK']}}" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Berat Badan Normal</label>
-                                <input type="text" value="{{$fuzzyData['BBN']}}" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Risiko Berat Badan Lebih</label>
-                                <input type="text" value="{{$fuzzyData['RBBL']}}" class="form-control" readonly>
-                            </div>
+            <div class="col-lg-3 d-flex align-items-stretch">
+                <div class="card">
+                    <div class="card-header">
+                        Indeks BB/U Bulan {{$bbuData['bln']}}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
                             <div class="col">
-                                <label for="">Status Gizi Balita Indeks BB/U</label>
-                                @if($fuzzyData['maxKey'] == 'BBSK')
-                                <input type="text" value="Berat Badan Sangat Kurang" class="form-control" readonly>
-                                @elseif($fuzzyData['maxKey'] == 'BBK')
-                                <input type="text" value="Berat Badan Kurang" class="form-control" readonly>
-                                @elseif($fuzzyData['maxKey'] == 'BBN')
-                                <input type="text" value="Berat Badan Normal" class="form-control" readonly>
-                                @elseif($fuzzyData['maxKey'] == 'RBBL')
-                                <input type="text" value="Risiko Berat Badan Lebih" class="form-control" readonly>
-                                @endif
+                                <div class="form-group">
+                                    <label>Berat Badan Sangat Kurang (severely
+                                        underweight)</label>
+                                    <input type="text" value="{{$fuzzyData['BBSK']}}" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Berat Badan Kurang (underweight)</label>
+                                    <input type="text" value="{{$fuzzyData['BBK']}}" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Berat Badan Normal</label>
+                                    <input type="text" value="{{$fuzzyData['BBN']}}" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Risiko Berat Badan Lebih</label>
+                                    <input type="text" value="{{$fuzzyData['RBBL']}}" class="form-control" readonly>
+                                </div>
+                                <div class="col">
+                                    <label for="">Status Gizi Balita Indeks BB/U</label>
+                                    @if($fuzzyData['maxKey'] == 'BBSK')
+                                    <input type="text" value="Berat Badan Sangat Kurang" class="form-control" readonly>
+                                    @elseif($fuzzyData['maxKey'] == 'BBK')
+                                    <input type="text" value="Berat Badan Kurang" class="form-control" readonly>
+                                    @elseif($fuzzyData['maxKey'] == 'BBN')
+                                    <input type="text" value="Berat Badan Normal" class="form-control" readonly>
+                                    @elseif($fuzzyData['maxKey'] == 'RBBL')
+                                    <input type="text" value="Risiko Berat Badan Lebih" class="form-control" readonly>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    Indeks BB/U Bulan {{$bbuData['bln']}}
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Sangat Pendek (severely Stunted)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Pendek (Stunted)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Normal</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Tinggi</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
+            <div class="col-lg-3 d-flex align-items-stretch">
+                <div class="card">
+                    <div class="card-header">
+                        Indeks BB/U Bulan {{$bbuData['bln']}}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
                             <div class="col">
-                                <label for="">Status Gizi Balita Indeks TB/U</label>
-                                <input type="text" value="" class="form-control" readonly>
+                                <div class="form-group">
+                                    <label>Sangat Pendek (severely Stunted)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Pendek (Stunted)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Normal</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tinggi</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="col">
+                                    <label for="">Status Gizi Balita Indeks TB/U</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    Indeks BB/TB Bulan {{$bbuData['bln']}}
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Gizi Buruk (Severely Wasted)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Gizi Kurang (Wasted)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Gizi Baik (Normal)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Berisiko Gizi Berlebih (possible risk of
-                                    overweight)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Gizi lebih (overweight)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Obesitas (obese)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
+            <div class="col-lg-3 d-flex align-items-stretch">
+                <div class="card">
+                    <div class="card-header">
+                        Indeks BB/TB Bulan {{$bbuData['bln']}}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
                             <div class="col">
-                                <label for="">Status Gizi Balita Indeks BB/TB</label>
-                                <input type="text" value="" class="form-control" readonly>
+                                <div class="form-group">
+                                    <label>Gizi Buruk (Severely Wasted)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Gizi Kurang (Wasted)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Gizi Baik (Normal)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Berisiko Gizi Berlebih (possible risk of
+                                        overweight)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Gizi lebih (overweight)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Obesitas (obese)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="col">
+                                    <label for="">Status Gizi Balita Indeks BB/TB</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    Indeks IMT/U Bulan {{$bbuData['bln']}}
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Gizi Buruk (Severely Wasted)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Gizi Kurang (Wasted)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Gizi Baik (Normal)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Berisiko Gizi Berlebih (possible risk of
-                                    overweight)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Gizi lebih (overweight)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Obesitas (obese)</label>
-                                <input type="text" value="" class="form-control" readonly>
-                            </div>
+            <div class="col-lg-3 d-flex align-items-stretch">
+                <div class="card">
+                    <div class="card-header">
+                        Indeks IMT/U Bulan {{$bbuData['bln']}}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
                             <div class="col">
-                                <label for="">Status Gizi Balita Indeks IMT/U </label>
-                                <input type="text" value="" class="form-control" readonly>
+                                <div class="form-group">
+                                    <label>Gizi Buruk (Severely Wasted)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Gizi Kurang (Wasted)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Gizi Baik (Normal)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Berisiko Gizi Berlebih (possible risk of
+                                        overweight)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Gizi lebih (overweight)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Obesitas (obese)</label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
+                                <div class="col">
+                                    <label for="">Status Gizi Balita Indeks IMT/U </label>
+                                    <input type="text" value="" class="form-control" readonly>
+                                </div>
                             </div>
                         </div>
                     </div>

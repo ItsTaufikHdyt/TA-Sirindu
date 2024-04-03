@@ -7,7 +7,7 @@
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <div class="brand-logo">
             <a href="#">
-                {{-- <img src="{{asset('logo/Sirindu-black.png')}}" alt=""> --}}
+                <img src="{{asset('logo/spkgizi-black.png')}}" width="50" height="50" alt="">
             </a>
         </div>
         <div class="login-menu">

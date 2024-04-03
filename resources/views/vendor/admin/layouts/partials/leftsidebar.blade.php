@@ -1,9 +1,7 @@
 <div class="left-side-bar">
 	<div class="brand-logo">
 		<a href="#">
-			<!-- <img src="{{asset('logo/Sirindu-white.png')}}" alt="" class="light-logo"> -->
-			{{-- <img src="{{asset('logo/Sirindu-allblack.png')}}" alt="" class="dark-logo">
-			<img src="{{asset('logo/Sirindu-white.png')}}" alt="" class="light-logo"> --}}
+			<img src="{{asset('logo/spkgizi-white.png')}}" width="70" height="70" class="light-logo">
 		</a>
 		<div class="close-sidebar" data-toggle="left-sidebar-close">
 			<i class="ion-close-round"></i>

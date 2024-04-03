@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="footer-wrap pd-20 mb-20 card-box">
-           Sistem Pendukung Keputusan © 2024 
+           SPK Gizi  © 2024 Taufik Hidayat 
         </div>
     </div>
     @section('scripts')

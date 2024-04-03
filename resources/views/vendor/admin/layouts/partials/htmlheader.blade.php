@@ -4,7 +4,7 @@
 	<title>@yield('title')</title>
 
 	<!-- Site favicon -->
-	{{-- <link rel="icon" href="{{asset('logo/icon-sirindu.png')}}"> --}}
+	<link rel="icon" href="{{asset('logo/icon-sirindu.png')}}">
 
 	<!-- Mobile Specific Metas -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">

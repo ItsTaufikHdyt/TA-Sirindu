@@ -32,14 +32,14 @@ Anak
         </div>
         <div class="col-md-4 col-sm-12">
             <div class="form-group">
-                <label>Nama Ibu <font color="red">*</font></label>
-                <input type="text" name="nama_ibu" class="form-control" require>
+                <label>Nama Ayah <font color="red">*</font></label>
+                <input type="text" name="nama_ayah" class="form-control" require>
             </div>
         </div>
         <div class="col-md-4 col-sm-12">
             <div class="form-group">
-                <label>Nama Ayah <font color="red">*</font></label>
-                <input type="text" name="nama_ayah" class="form-control" require>
+                <label>Nama Ibu <font color="red">*</font></label>
+                <input type="text" name="nama_ibu" class="form-control" require>
             </div>
         </div>
         <div class="col-md-4 col-sm-12">

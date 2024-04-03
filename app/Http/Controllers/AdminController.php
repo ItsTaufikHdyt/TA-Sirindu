@@ -70,7 +70,6 @@ ANAK
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="' . route('admin.editAnak', $data->id) . '">Edit Data Anak</a>
-                    <a class="dropdown-item" href="' . route('admin.chartAnak', $data->id) . '">Grafik Data Anak</a>
                     <a class="dropdown-item" href="' . route('admin.showAnak', $data->id) . '">Show Data Anak</a>
                     <a class="dropdown-item" href="' . route('admin.dataAnak', $data->id) . '">Tambah Data Berkala Anak</a>
                 </div>
@@ -103,7 +102,6 @@ ANAK
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="' . route('admin.editAnak', $data->id) . '">Edit Data Anak</a>
-                    <a class="dropdown-item" href="' . route('admin.chartAnak', $data->id) . '">Grafik Data Anak</a>
                     <a class="dropdown-item" href="' . route('admin.showAnak', $data->id) . '">Show Data Anak</a>
                     <a class="dropdown-item" href="' . route('admin.dataAnak', $data->id) . '">Tambah Data Berkala Anak</a>
                 </div>
@@ -383,11 +381,6 @@ ANAK
         }
     }
 
-    public function exportView()
-    {
-        $kec = Kecamatan::all();
-        return view('admin.anak.export', compact('kec'));
-    }
 
     public function formViewExport(Request $request)
     {
