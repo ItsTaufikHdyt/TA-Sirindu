@@ -82,6 +82,11 @@ Show Data Anak
     </div>
     <div class="col">
         @foreach ($bbu as $index => $bbuData)
+        @php
+        $tbuData = $tbu[$index];
+        $bbtbData = $bbtb[$index];
+        $imtuData = $imtu[$index];
+        @endphp
         <div class="py-2 my-1 text-center position-relative mx-2">
             <div class="position-absolute w-100 top-50 start-50 translate-middle" style="z-index: 2">
                 <span class="d-inline-block bg-white px-2 text-muted">Bulan {{$bbuData['bln']}} </span>
@@ -89,7 +94,12 @@ Show Data Anak
             <div class="position-absolute w-100 top-50 start-0 border-muted border-top"></div>
         </div>
         @if(isset($resultFuzzyBB_U[$index]))
-        @php $fuzzyData = $resultFuzzyBB_U[$index]; @endphp
+        @php 
+        $fuzzyDataBBU = $resultFuzzyBB_U[$index];
+        $fuzzyDataTBU = $resultFuzzyTB_U[$index];
+        $fuzzyDataBBTB = $resultFuzzyBB_TB[$index];
+        $fuzzyDataIMTU = $resultFuzzyIMT_U[$index]; 
+        @endphp
         <div class="card mb-4 mt-4 d-flex align-items-stretch">
             <div class="card-header">
                 Nilai Z-Score Bulan {{$bbuData['bln']}}
@@ -117,43 +127,55 @@ Show Data Anak
                     <div class="col col-md-3">
                         <div class="form-group">
                             <label>Median TB/U</label>
-                            <input type="text" value="" class="form-control" readonly>
+                            <input type="text" value="{{$tbuData['b']}}" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>SB TB/U</label>
-                            <input type="text" value="" class="form-control" readonly>
+                            @if($bbuData['a'] == null)
+                            <input type="text" value="{{$tbuData['c']}}" class="form-control" readonly>
+                            @elseif($bbuData['c'] == null)
+                            <input type="text" value="{{$tbuData['a']}}" class="form-control" readonly>
+                            @endif
                         </div>
                         <div class="form-group">
                             <label>Z-Score TB/U</label>
-                            <input type="text" value="" class="form-control" readonly>
+                            <input type="text" value="{{$tbuData['tbu']}}" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="col col-md-3">
                         <div class="form-group">
                             <label>Median BB/TB</label>
-                            <input type="text" value="" class="form-control" readonly>
+                            <input type="text" value="{{$bbtbData['b']}}" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>SB BB/TB</label>
-                            <input type="text" value="" class="form-control" readonly>
+                            @if($bbuData['a'] == null)
+                            <input type="text" value="{{$bbtbData['c']}}" class="form-control" readonly>
+                            @elseif($bbuData['c'] == null)
+                            <input type="text" value="{{$bbtbData['a']}}" class="form-control" readonly>
+                            @endif
                         </div>
                         <div class="form-group">
                             <label>Z-Score BB/TB</label>
-                            <input type="text" value="" class="form-control" readonly>
+                            <input type="text" value="{{$bbtbData['bbtb']}}" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="col col-md-3">
                         <div class="form-group">
                             <label>Median IMT/U</label>
-                            <input type="text" value="" class="form-control" readonly>
+                            <input type="text" value="{{$imtuData['b']}}" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>SB IMT/U</label>
-                            <input type="text" value="" class="form-control" readonly>
+                            @if($bbuData['a'] == null)
+                            <input type="text" value="{{$imtuData['c']}}" class="form-control" readonly>
+                            @elseif($bbuData['c'] == null)
+                            <input type="text" value="{{$imtuData['a']}}" class="form-control" readonly>
+                            @endif
                         </div>
                         <div class="form-group">
                             <label>Z-Score IMT/U</label>
-                            <input type="text" value="" class="form-control" readonly>
+                            <input type="text" value="{{$imtuData['imtu']}}" class="form-control" readonly>
                         </div>
                     </div>
                 </div>
@@ -171,29 +193,29 @@ Show Data Anak
                                 <div class="form-group">
                                     <label>Berat Badan Sangat Kurang (severely
                                         underweight)</label>
-                                    <input type="text" value="{{$fuzzyData['BBSK']}}" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataBBU['BBSK']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Berat Badan Kurang (underweight)</label>
-                                    <input type="text" value="{{$fuzzyData['BBK']}}" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataBBU['BBK']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Berat Badan Normal</label>
-                                    <input type="text" value="{{$fuzzyData['BBN']}}" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataBBU['BBN']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Risiko Berat Badan Lebih</label>
-                                    <input type="text" value="{{$fuzzyData['RBBL']}}" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataBBU['RBBL']}}" class="form-control" readonly>
                                 </div>
                                 <div class="col">
                                     <label for="">Status Gizi Balita Indeks BB/U</label>
-                                    @if($fuzzyData['maxKey'] == 'BBSK')
+                                    @if($fuzzyDataBBU['maxKey'] == 'BBSK')
                                     <input type="text" value="Berat Badan Sangat Kurang" class="form-control" readonly>
-                                    @elseif($fuzzyData['maxKey'] == 'BBK')
+                                    @elseif($fuzzyDataBBU['maxKey'] == 'BBK')
                                     <input type="text" value="Berat Badan Kurang" class="form-control" readonly>
-                                    @elseif($fuzzyData['maxKey'] == 'BBN')
+                                    @elseif($fuzzyDataBBU['maxKey'] == 'BBN')
                                     <input type="text" value="Berat Badan Normal" class="form-control" readonly>
-                                    @elseif($fuzzyData['maxKey'] == 'RBBL')
+                                    @elseif($fuzzyDataBBU['maxKey'] == 'RBBL')
                                     <input type="text" value="Risiko Berat Badan Lebih" class="form-control" readonly>
                                     @endif
                                 </div>
@@ -205,30 +227,38 @@ Show Data Anak
             <div class="col-lg-3 d-flex align-items-stretch">
                 <div class="card">
                     <div class="card-header">
-                        Indeks BB/U Bulan {{$bbuData['bln']}}
+                        Indeks TB/U Bulan {{$tbuData['bln']}}
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     <label>Sangat Pendek (severely Stunted)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataTBU['SP']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Pendek (Stunted)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataTBU['P']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Normal</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataTBU['N']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Tinggi</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataTBU['T']}}" class="form-control" readonly>
                                 </div>
                                 <div class="col">
                                     <label for="">Status Gizi Balita Indeks TB/U</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    @if($fuzzyDataTBU['maxKey'] == 'SP')
+                                    <input type="text" value="Sangat Pendek" class="form-control" readonly>
+                                    @elseif($fuzzyDataTBU['maxKey'] == 'P')
+                                    <input type="text" value="Pendek" class="form-control" readonly>
+                                    @elseif($fuzzyDataTBU['maxKey'] == 'N')
+                                    <input type="text" value="Normal" class="form-control" readonly>
+                                    @elseif($fuzzyDataTBU['maxKey'] == 'T')
+                                    <input type="text" value="Tinggi" class="form-control" readonly>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -238,39 +268,51 @@ Show Data Anak
             <div class="col-lg-3 d-flex align-items-stretch">
                 <div class="card">
                     <div class="card-header">
-                        Indeks BB/TB Bulan {{$bbuData['bln']}}
+                        Indeks BB/TB Bulan {{$bbtbData['bln']}}
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     <label>Gizi Buruk (Severely Wasted)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataBBTB['GBK']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Gizi Kurang (Wasted)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataBBTB['GK']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Gizi Baik (Normal)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataBBTB['GB']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Berisiko Gizi Berlebih (possible risk of
                                         overweight)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataBBTB['BGL']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Gizi lebih (overweight)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <label>Gizi Lebih (overweight)</label>
+                                    <input type="text" value="{{$fuzzyDataBBTB['GL']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Obesitas (obese)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataBBTB['O']}}" class="form-control" readonly>
                                 </div>
                                 <div class="col">
                                     <label for="">Status Gizi Balita Indeks BB/TB</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    @if($fuzzyDataBBTB['maxKey'] == 'GBK')
+                                    <input type="text" value="Gizi Buruk" class="form-control" readonly>
+                                    @elseif($fuzzyDataBBTB['maxKey'] == 'GK')
+                                    <input type="text" value="Gizi Kurang" class="form-control" readonly>
+                                    @elseif($fuzzyDataBBTB['maxKey'] == 'GB')
+                                    <input type="text" value="Gizi Baik" class="form-control" readonly>
+                                    @elseif($fuzzyDataBBTB['maxKey'] == 'BGL')
+                                    <input type="text" value="Berisiko Gizi Berlebih" class="form-control" readonly>
+                                    @elseif($fuzzyDataBBTB['maxKey'] == 'GL')
+                                    <input type="text" value="Gizi lebih" class="form-control" readonly>
+                                    @elseif($fuzzyDataBBTB['maxKey'] == 'O')
+                                    <input type="text" value="Obesitas" class="form-control" readonly>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -280,39 +322,51 @@ Show Data Anak
             <div class="col-lg-3 d-flex align-items-stretch">
                 <div class="card">
                     <div class="card-header">
-                        Indeks IMT/U Bulan {{$bbuData['bln']}}
+                        Indeks IMT/U Bulan {{$imtuData['bln']}}
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     <label>Gizi Buruk (Severely Wasted)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataIMTU['GBK']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Gizi Kurang (Wasted)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataIMTU['GK']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Gizi Baik (Normal)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataIMTU['GB']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Berisiko Gizi Berlebih (possible risk of
                                         overweight)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataIMTU['BGL']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Gizi lebih (overweight)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataIMTU['GL']}}" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Obesitas (obese)</label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    <input type="text" value="{{$fuzzyDataIMTU['O']}}" class="form-control" readonly>
                                 </div>
                                 <div class="col">
                                     <label for="">Status Gizi Balita Indeks IMT/U </label>
-                                    <input type="text" value="" class="form-control" readonly>
+                                    @if($fuzzyDataIMTU['maxKey'] == 'GBK')
+                                    <input type="text" value="Gizi Buruk" class="form-control" readonly>
+                                    @elseif($fuzzyDataIMTU['maxKey'] == 'GK')
+                                    <input type="text" value="Gizi Kurang" class="form-control" readonly>
+                                    @elseif($fuzzyDataIMTU['maxKey'] == 'GB')
+                                    <input type="text" value="Gizi Baik" class="form-control" readonly>
+                                    @elseif($fuzzyDataIMTU['maxKey'] == 'BGL')
+                                    <input type="text" value="Berisiko Gizi Berlebih" class="form-control" readonly>
+                                    @elseif($fuzzyDataIMTU['maxKey'] == 'GL')
+                                    <input type="text" value="Gizi lebih" class="form-control" readonly>
+                                    @elseif($fuzzyDataIMTU['maxKey'] == 'O')
+                                    <input type="text" value="Obesitas" class="form-control" readonly>
+                                    @endif
                                 </div>
                             </div>
                         </div>

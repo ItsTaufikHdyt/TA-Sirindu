@@ -169,7 +169,7 @@ function getIMT_U($x)
 {
     $imtuData = [];
     foreach ($x as $key => $data) {
-        $tb = $data->tb;
+        $tb = $data->tb * 0.01;
         $bb = $data->bb;
         $jk = $data->jk;
         $imt = $bb / ($tb * $tb);

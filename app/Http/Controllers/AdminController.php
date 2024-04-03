@@ -228,81 +228,91 @@ ANAK
 
         //******************************** FUZZY TB/U ****************************************//
         //Menghitung Derajat Fuzzy Ke Setiap Himpunan
-        // $resultFuzzyTB_U = [];
-        // foreach ($tbu as $key => $tbuValue) {
+        $resultFuzzyTB_U = [];
+        foreach ($tbu as $key => $tbuValue) {
 
-        //     $dataFuzzyTB_U = fuzzyTB_U($tbuValue['tbu'], $fuzzySet2);
-        //     // Mendapatkan nilai maksimum dari array fuzzy
-        //     $maxValue = max($dataFuzzyTB_U);
+            $dataFuzzyTB_U = fuzzyTB_U($tbuValue['tbu'], $fuzzySet2);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyTB_U);
 
-        //     // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
-        //     $maxKey = array_search($maxValue, $dataFuzzyTB_U);
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyTB_U);
 
-        //     // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
-        //     $resultFuzzyTB_U[] = [
-        //         'SP' => $dataFuzzyTB_U['SP'],
-        //         'P' => $dataFuzzyTB_U['P'],
-        //         'N' => $dataFuzzyTB_U['N'],
-        //         'T' => $dataFuzzyTB_U['T'],
-        //         'maxKey' => $maxKey,
-        //         'maxValue' => $maxValue
-        //     ];
-        // }
-        //dd($bbu,$resultFuzzyTB_U);
+            // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
+            $resultFuzzyTB_U[] = [
+                'SP' => $dataFuzzyTB_U['SP'],
+                'P' => $dataFuzzyTB_U['P'],
+                'N' => $dataFuzzyTB_U['N'],
+                'T' => $dataFuzzyTB_U['T'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+        // dd($tbu,$resultFuzzyTB_U);
 
         //******************************** FUZZY BB/TB ****************************************//
         //Menghitung Derajat Fuzzy Ke Setiap Himpunan
-        // $resultFuzzyBB_TB= [];
-        // foreach ($bbtb as $key => $bbtbValue) {
+        $resultFuzzyBB_TB = [];
+        foreach ($bbtb as $key => $bbtbValue) {
 
-        //     $dataFuzzyBB_TB = fuzzyBB_TB($bbtbValue['tbu'], $fuzzySet3);
-        //     // Mendapatkan nilai maksimum dari array fuzzy
-        //     $maxValue = max($dataFuzzyBB_TB);
+            $dataFuzzyBB_TB = fuzzyBB_TB($bbtbValue['bbtb'], $fuzzySet3);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyBB_TB);
 
-        //     // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
-        //     $maxKey = array_search($maxValue, $dataFuzzyBB_TB);
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyBB_TB);
 
-        //     // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
-        //     $resultFuzzyBB_TB[] = [
-        //         'GBK' => $dataFuzzyBB_TB['GBK'],
-        //         'GK' => $dataFuzzyBB_TB['GK'],
-        //         'GB' => $dataFuzzyBB_TB['GB'],
-        //         'BGL' => $dataFuzzyBB_TB['BGL'],
-        //         'GL' => $dataFuzzyBB_TB['GL'],
-        //         'O' => $dataFuzzyBB_TB['O'],
-        //         'maxKey' => $maxKey,
-        //         'maxValue' => $maxValue
-        //     ];
-        // }
-        //dd($bbu,$resultFuzzyBB_TB);
+            // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
+            $resultFuzzyBB_TB[] = [
+                'GBK' => $dataFuzzyBB_TB['GBK'],
+                'GK' => $dataFuzzyBB_TB['GK'],
+                'GB' => $dataFuzzyBB_TB['GB'],
+                'BGL' => $dataFuzzyBB_TB['BGL'],
+                'GL' => $dataFuzzyBB_TB['GL'],
+                'O' => $dataFuzzyBB_TB['O'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+        // dd($bbtb,$resultFuzzyBB_TB);
 
         //******************************** FUZZY IMT/U ****************************************//
         //Menghitung Derajat Fuzzy Ke Setiap Himpunan
-        // $resultFuzzyIMT_U= [];
-        // foreach ($imtu as $key => $imtValue) {
+        $resultFuzzyIMT_U = [];
+        foreach ($imtu as $key => $imtValue) {
 
-        //     $dataFuzzyIMT_U = fuzzyBB_TB($imtValue['tbu'], $fuzzySet4);
-        //     // Mendapatkan nilai maksimum dari array fuzzy
-        //     $maxValue = max($dataFuzzyIMT_U);
+            $dataFuzzyIMT_U = fuzzyBB_TB($imtValue['imtu'], $fuzzySet4);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyIMT_U);
 
-        //     // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
-        //     $maxKey = array_search($maxValue, $dataFuzzyIMT_U);
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyIMT_U);
 
-        //     // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
-        //     $resultFuzzyIMT_U[] = [
-        //         'GBK' => $dataFuzzyIMT_U['GBK'],
-        //         'GK' => $dataFuzzyIMT_U['GK'],
-        //         'GB' => $dataFuzzyIMT_U['GB'],
-        //         'BGL' => $dataFuzzyIMT_U['BGL'],
-        //         'GL' => $dataFuzzyIMT_U['GL'],
-        //         'O' => $dataFuzzyIMT_U['O'],
-        //         'maxKey' => $maxKey,
-        //         'maxValue' => $maxValue
-        //     ];
-        // }
-        //dd($bbu,$resultFuzzyIMT_U);
+            // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
+            $resultFuzzyIMT_U[] = [
+                'GBK' => $dataFuzzyIMT_U['GBK'],
+                'GK' => $dataFuzzyIMT_U['GK'],
+                'GB' => $dataFuzzyIMT_U['GB'],
+                'BGL' => $dataFuzzyIMT_U['BGL'],
+                'GL' => $dataFuzzyIMT_U['GL'],
+                'O' => $dataFuzzyIMT_U['O'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+        // dd($imtu,$resultFuzzyIMT_U);
 
-        return view('admin.anak.show', compact('anak', 'bbu', 'resultFuzzyBB_U', 'tbu'))->with('hasilx', $hasilx);
+        return view('admin.anak.show', compact(
+            'anak',
+            'bbu',
+            'tbu',
+            'bbtb',
+            'imtu',
+            'resultFuzzyBB_U',
+            'resultFuzzyTB_U',
+            'resultFuzzyBB_TB',
+            'resultFuzzyIMT_U'
+        ))->with('hasilx', $hasilx);
     }
 
 
