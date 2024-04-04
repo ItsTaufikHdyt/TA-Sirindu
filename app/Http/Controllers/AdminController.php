@@ -8,10 +8,8 @@ use App\Repositories\Admin\Anak\AnakRepository as AnakInterface;
 use App\Repositories\Admin\Fuzzy\FuzzyRepository as FuzzyInterface;
 use App\Http\Requests\Admin\User\storeUserRequest;
 use App\Http\Requests\Admin\Anak\storeAnakRequest;
-use App\Http\Requests\Admin\Anak\updateAnakRequest;
 use App\Models\Anak;
 use App\Models\DataAnak;
-use App\Models\Kecamatan;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\AnakExport;
@@ -392,362 +390,247 @@ ANAK
     }
 
 
-    public function formViewExport(Request $request)
-    {
-        return Excel::download(new AnakExport($request), 'data-anak.xlsx');
-        // $from_date = $request->from_date;
-        // $to_date = $request->to_date;
-        // $kec = $request->id_kec;
-        // $kel = $request->id_kel;
-        // $rt = $request->id_rt;
-        // $puskesmas = $request->id_puskesmas;
-        // $posyandu = $request->id_posyandu;
-        // if ($request->from_date != '' && $request->to_date != '') {
-        //     if ($request->id_kec !== "0" && $request->id_kec !== null) {
-
-        //         if ($request->id_puskesmas !== "0" && $request->id_puskesmas !== null) {
-        //             $export = DB::table('alldata')->whereBetween('tgl_kunjungan', array($request->from_date, $request->to_date))
-        //                 ->where('idKec', $kec)->where('idPuskes', $puskesmas)
-        //                 ->get();
-        //             return view('admin.anak.export.view', compact('export'));
-        //             if ($request->id_posyandu !== "0" && $request->id_posyandu !== null) {
-        //                 $export = DB::table('alldata')->whereBetween('tgl_kunjungan', array($request->from_date, $request->to_date))
-        //                     ->where('idKec', $kec)->where('idPuskes', $puskesmas)->where('idPos', $posyandu)
-        //                     ->get();
-        //                 return view('admin.anak.export.view', compact('export'));
-        //             }
-        //         } elseif ($request->id_kelurahan !== "0" && $request->id_kelurahan !== null) {
-        //             $export = DB::table('alldata')->whereBetween('tgl_kunjungan', array($request->from_date, $request->to_date))
-        //                 ->where('idKec', $kec)->where('idKel', $kel)
-        //                 ->get();
-        //             return view('admin.anak.export.view', compact('export'));
-        //             if ($request->id_rt !== "0" && $request->id_rt !== null) {
-        //                 $export = DB::table('alldata')->whereBetween('tgl_kunjungan', array($request->from_date, $request->to_date))
-        //                     ->where('idKec', $kec)->where('idKel', $kel)->where('idRt', $rt)
-        //                     ->get();
-        //                 return view('admin.anak.export.view', compact('export'));
-        //             }
-        //         } else {
-        //             $export = DB::table('alldata')->whereBetween('tgl_kunjungan', array($request->from_date, $request->to_date))->where('idKec', $kec)->get();
-        //             return view('admin.anak.export.view', compact('export'));
-        //         }
-        //     }
-        // } else {
-        //     $export = DB::table('alldata')->whereBetween('tgl_kunjungan', array($request->from_date, $request->to_date))->get();
-        //     return view('admin.anak.export.view', compact('export'));
-        // }
-    }
-
-    public function formViewExportExcel()
-    {
-        //return Excel::download(new AnakExport(), 'data-anak.xlsx');
-    }
-
-    public function exportExcel(Request $request)
-    {
-        //return Excel::download(new AnakExport($request), 'data-anak.xlsx');
-        // if ($request->id_kec !== "0" && $request->id_kec !== null) {
-        //     if ($request->id_puskesmas !== "0" && $request->id_puskesmas !== null) {
-        //         return (new FastExcel(AllData::where('idKec', $request->id_kec)
-        //             ->where('idPuskes', $request->id_puskesmas)
-        //             ->get()))->download(
-        //             'all-data-anak.xlsx',
-        //             function ($data) {
-        //                 return [
-        //                     'No KK' => $data->no_kk,
-        //                     'NIK' => $data->nik,
-        //                     'Nama' => $data->nama,
-        //                     'Nik Orang Tua' => $data->nik_ortu,
-        //                     'Nama Ibu' => $data->nama_ibu,
-        //                     'Nama Ayah' => $data->nama_ayah,
-        //                     'Jenis Kelamin' => $data->jk,
-        //                     'Tempat Lahir' => $data->tempat_lahir,
-        //                     'Tanggal Lahir' => $data->tgl_lahir,
-        //                     'Golongan Darah' => $data->golda,
-        //                     'Anak Ke-' => $data->anak,
-        //                     'Catatan' => $data->catatan,
-        //                     'hbo' => $data->hbo,
-        //                     'bcg' => $data->bcg,
-        //                     'polio1' => $data->polio1,
-        //                     'dpthb_hib1' => $data->dpthb_hib1,
-        //                     'polio2' => $data->polio2,
-        //                     'dpthb_hib2' => $data->dpthb_hib2,
-        //                     'polio3' => $data->polio3,
-        //                     'dpthb_hib3' => $data->dpthb_hib3,
-        //                     'polio4' => $data->polio4,
-        //                     'campak' => $data->campak,
-        //                     'Kecamatan' => $data->nameKec,
-        //                     'Kelurahan' => $data->nameKel,
-        //                     'Puskesmas' => $data->namePuskes,
-        //                     'Posyandu' => $data->namePos,
-        //                     'RT' => $data->nameRt,
-        //                     'Bulan' => $data->bln,
-        //                     'Posisi' => $data->posisi,
-        //                     'Tinggi Badan' => $data->tb,
-        //                     'Berat Badan' => $data->bb,
-        //                     'BMI' => round(10000 * $data->bb / pow($data->tb, 2), 2),
-        //                     'Lingkar Lengan Atas' => $data->lla,
-        //                     'Lingkar Kepala' => $data->lk,
-        //                     'NTOB' => $data->ntob,
-        //                     'ASI' => $data->asi,
-        //                     'Vitamin A' => $data->vit_a,
-        //                     'Nama Petugas' => $data->namaPetugas,
-        //                 ];
-        //             },
-        //         );
-
-        //         if ($request->id_posyandu !== "0" && $request->id_posyandu !== null) {
-        //             return (new FastExcel(
-        //                 AllData::where('idKec', $request->id_kec)
-        //                     ->where('idPuskes', $request->id_puskesmas)
-        //                     ->where('idPos', $request->id_posyandu)->get()
-        //             ))->download(
-        //                 'all-data-anak.xlsx',
-        //                 function ($data) {
-        //                     return [
-        //                         'No KK' => $data->no_kk,
-        //                         'NIK' => $data->nik,
-        //                         'Nama' => $data->nama,
-        //                         'Nik Orang Tua' => $data->nik_ortu,
-        //                         'Nama Ibu' => $data->nama_ibu,
-        //                         'Nama Ayah' => $data->nama_ayah,
-        //                         'Jenis Kelamin' => $data->jk,
-        //                         'Tempat Lahir' => $data->tempat_lahir,
-        //                         'Tanggal Lahir' => $data->tgl_lahir,
-        //                         'Golongan Darah' => $data->golda,
-        //                         'Anak Ke-' => $data->anak,
-        //                         'Catatan' => $data->catatan,
-        //                         'hbo' => $data->hbo,
-        //                         'bcg' => $data->bcg,
-        //                         'polio1' => $data->polio1,
-        //                         'dpthb_hib1' => $data->dpthb_hib1,
-        //                         'polio2' => $data->polio2,
-        //                         'dpthb_hib2' => $data->dpthb_hib2,
-        //                         'polio3' => $data->polio3,
-        //                         'dpthb_hib3' => $data->dpthb_hib3,
-        //                         'polio4' => $data->polio4,
-        //                         'campak' => $data->campak,
-        //                         'Kecamatan' => $data->nameKec,
-        //                         'Kelurahan' => $data->nameKel,
-        //                         'Puskesmas' => $data->namePuskes,
-        //                         'Posyandu' => $data->namePos,
-        //                         'RT' => $data->nameRt,
-        //                         'Bulan' => $data->bln,
-        //                         'Posisi' => $data->posisi,
-        //                         'Tinggi Badan' => $data->tb,
-        //                         'Berat Badan' => $data->bb,
-        //                         'BMI' => round(10000 * $data->bb / pow($data->tb, 2), 2),
-        //                         'Lingkar Lengan Atas' => $data->lla,
-        //                         'Lingkar Kepala' => $data->lk,
-        //                         'NTOB' => $data->ntob,
-        //                         'ASI' => $data->asi,
-        //                         'Vitamin A' => $data->vit_a,
-        //                         'Nama Petugas' => $data->namaPetugas,
-        //                     ];
-        //                 },
-        //             );
-        //         }
-        //     } elseif ($request->id_kelurahan !== "0" && $request->id_kelurahan !== null) {
-        //         return (new FastExcel(AllData::where('idKec', $request->id_kec)
-        //             ->where('idKel', $request->id_kel)
-        //             ->get()))->download(
-        //             'all-data-anak.xlsx',
-        //             function ($data) {
-        //                 return [
-        //                     'No KK' => $data->no_kk,
-        //                     'NIK' => $data->nik,
-        //                     'Nama' => $data->nama,
-        //                     'Nik Orang Tua' => $data->nik_ortu,
-        //                     'Nama Ibu' => $data->nama_ibu,
-        //                     'Nama Ayah' => $data->nama_ayah,
-        //                     'Jenis Kelamin' => $data->jk,
-        //                     'Tempat Lahir' => $data->tempat_lahir,
-        //                     'Tanggal Lahir' => $data->tgl_lahir,
-        //                     'Golongan Darah' => $data->golda,
-        //                     'Anak Ke-' => $data->anak,
-        //                     'Catatan' => $data->catatan,
-        //                     'hbo' => $data->hbo,
-        //                     'bcg' => $data->bcg,
-        //                     'polio1' => $data->polio1,
-        //                     'dpthb_hib1' => $data->dpthb_hib1,
-        //                     'polio2' => $data->polio2,
-        //                     'dpthb_hib2' => $data->dpthb_hib2,
-        //                     'polio3' => $data->polio3,
-        //                     'dpthb_hib3' => $data->dpthb_hib3,
-        //                     'polio4' => $data->polio4,
-        //                     'campak' => $data->campak,
-        //                     'Kecamatan' => $data->nameKec,
-        //                     'Kelurahan' => $data->nameKel,
-        //                     'Puskesmas' => $data->namePuskes,
-        //                     'Posyandu' => $data->namePos,
-        //                     'RT' => $data->nameRt,
-        //                     'Bulan' => $data->bln,
-        //                     'Posisi' => $data->posisi,
-        //                     'Tinggi Badan' => $data->tb,
-        //                     'Berat Badan' => $data->bb,
-        //                     'BMI' => round(10000 * $data->bb / pow($data->tb, 2), 2),
-        //                     'Lingkar Lengan Atas' => $data->lla,
-        //                     'Lingkar Kepala' => $data->lk,
-        //                     'NTOB' => $data->ntob,
-        //                     'ASI' => $data->asi,
-        //                     'Vitamin A' => $data->vit_a,
-        //                     'Nama Petugas' => $data->namaPetugas,
-        //                 ];
-        //             },
-        //         );
-
-        //         if ($request->id_rt !== "0" && $request->id_rt !== null) {
-        //             return (new FastExcel(
-        //                 AllData::where('idKec', $request->id_kec)
-        //                     ->where('idKel', $request->id_kel)
-        //                     ->where('idRt', $request->id_rt)->get()
-        //             ))->download(
-        //                 'all-data-anak.xlsx',
-        //                 function ($data) {
-        //                     return [
-        //                         'No KK' => $data->no_kk,
-        //                         'NIK' => $data->nik,
-        //                         'Nama' => $data->nama,
-        //                         'Nik Orang Tua' => $data->nik_ortu,
-        //                         'Nama Ibu' => $data->nama_ibu,
-        //                         'Nama Ayah' => $data->nama_ayah,
-        //                         'Jenis Kelamin' => $data->jk,
-        //                         'Tempat Lahir' => $data->tempat_lahir,
-        //                         'Tanggal Lahir' => $data->tgl_lahir,
-        //                         'Golongan Darah' => $data->golda,
-        //                         'Anak Ke-' => $data->anak,
-        //                         'Catatan' => $data->catatan,
-        //                         'hbo' => $data->hbo,
-        //                         'bcg' => $data->bcg,
-        //                         'polio1' => $data->polio1,
-        //                         'dpthb_hib1' => $data->dpthb_hib1,
-        //                         'polio2' => $data->polio2,
-        //                         'dpthb_hib2' => $data->dpthb_hib2,
-        //                         'polio3' => $data->polio3,
-        //                         'dpthb_hib3' => $data->dpthb_hib3,
-        //                         'polio4' => $data->polio4,
-        //                         'campak' => $data->campak,
-        //                         'Kecamatan' => $data->nameKec,
-        //                         'Kelurahan' => $data->nameKel,
-        //                         'Puskesmas' => $data->namePuskes,
-        //                         'Posyandu' => $data->namePos,
-        //                         'RT' => $data->nameRt,
-        //                         'Bulan' => $data->bln,
-        //                         'Posisi' => $data->posisi,
-        //                         'Tinggi Badan' => $data->tb,
-        //                         'Berat Badan' => $data->bb,
-        //                         'BMI' => round(10000 * $data->bb / pow($data->tb, 2), 2),
-        //                         'Lingkar Lengan Atas' => $data->lla,
-        //                         'Lingkar Kepala' => $data->lk,
-        //                         'NTOB' => $data->ntob,
-        //                         'ASI' => $data->asi,
-        //                         'Vitamin A' => $data->vit_a,
-        //                         'Nama Petugas' => $data->namaPetugas,
-        //                     ];
-        //                 },
-        //             );
-        //         }
-        //     } else {
-        //         return (new FastExcel(AllData::where('idKec', $request->id_kec)->get()))->download(
-        //             'all-data-anak.xlsx',
-        //             function ($data) {
-        //                 return [
-        //                     'No KK' => $data->no_kk,
-        //                     'NIK' => $data->nik,
-        //                     'Nama' => $data->nama,
-        //                     'Nik Orang Tua' => $data->nik_ortu,
-        //                     'Nama Ibu' => $data->nama_ibu,
-        //                     'Nama Ayah' => $data->nama_ayah,
-        //                     'Jenis Kelamin' => $data->jk,
-        //                     'Tempat Lahir' => $data->tempat_lahir,
-        //                     'Tanggal Lahir' => $data->tgl_lahir,
-        //                     'Golongan Darah' => $data->golda,
-        //                     'Anak Ke-' => $data->anak,
-        //                     'Catatan' => $data->catatan,
-        //                     'hbo' => $data->hbo,
-        //                     'bcg' => $data->bcg,
-        //                     'polio1' => $data->polio1,
-        //                     'dpthb_hib1' => $data->dpthb_hib1,
-        //                     'polio2' => $data->polio2,
-        //                     'dpthb_hib2' => $data->dpthb_hib2,
-        //                     'polio3' => $data->polio3,
-        //                     'dpthb_hib3' => $data->dpthb_hib3,
-        //                     'polio4' => $data->polio4,
-        //                     'campak' => $data->campak,
-        //                     'Kecamatan' => $data->nameKec,
-        //                     'Kelurahan' => $data->nameKel,
-        //                     'Puskesmas' => $data->namePuskes,
-        //                     'Posyandu' => $data->namePos,
-        //                     'RT' => $data->nameRt,
-        //                     'Bulan' => $data->bln,
-        //                     'Posisi' => $data->posisi,
-        //                     'Tinggi Badan' => $data->tb,
-        //                     'Berat Badan' => $data->bb,
-        //                     'BMI' => round(10000 * $data->bb / pow($data->tb, 2), 2),
-        //                     'Lingkar Lengan Atas' => $data->lla,
-        //                     'Lingkar Kepala' => $data->lk,
-        //                     'NTOB' => $data->ntob,
-        //                     'ASI' => $data->asi,
-        //                     'Vitamin A' => $data->vit_a,
-        //                     'Nama Petugas' => $data->namaPetugas,
-        //                 ];
-        //             },
-        //         );
-        //     }
-        // }
-    }
 
     public function exportAllExcel()
     {
         //return Excel::download(new AllExport, 'all-data-anak.xlsx');
-        // $datax= AllData::all();
-        return (new FastExcel(AllData::all()))->download(
-            'all-data-anak.xlsx',
-            function ($data) {
-                return [
-                    'No KK' => $data->no_kk,
-                    'NIK' => $data->nik,
-                    'Nama' => $data->nama,
-                    'Nik Orang Tua' => $data->nik_ortu,
-                    'Nama Ibu' => $data->nama_ibu,
-                    'Nama Ayah' => $data->nama_ayah,
-                    'Jenis Kelamin' => $data->jk,
-                    'Tempat Lahir' => $data->tempat_lahir,
-                    'Tanggal Lahir' => $data->tgl_lahir,
-                    'Golongan Darah' => $data->golda,
-                    'Anak Ke-' => $data->anak,
-                    'Catatan' => $data->catatan,
-                    'hbo' => $data->hbo,
-                    'bcg' => $data->bcg,
-                    'polio1' => $data->polio1,
-                    'dpthb_hib1' => $data->dpthb_hib1,
-                    'polio2' => $data->polio2,
-                    'dpthb_hib2' => $data->dpthb_hib2,
-                    'polio3' => $data->polio3,
-                    'dpthb_hib3' => $data->dpthb_hib3,
-                    'polio4' => $data->polio4,
-                    'campak' => $data->campak,
-                    'Kecamatan' => $data->nameKec,
-                    'Kelurahan' => $data->nameKel,
-                    'Puskesmas' => $data->namePuskes,
-                    'Posyandu' => $data->namePos,
-                    'RT' => $data->nameRt,
-                    'Tanggal Kunjungan' => $data->tgl_kunjungan,
-                    'Bulan' => $data->bln,
-                    'Posisi' => $data->posisi,
-                    'Tinggi Badan' => $data->tb,
-                    'Berat Badan' => $data->bb,
-                    'BMI' => round(10000 * $data->bb / pow($data->tb, 2), 2),
-                    // 'BB/U' => z_score($data->bb, $data->tb, $data->bln, $data->posisi, $data->jk),
-                    'Lingkar Lengan Atas' => $data->lla,
-                    'Lingkar Kepala' => $data->lk,
-                    'NTOB' => $data->ntob,
-                    'ASI' => $data->asi,
-                    'Vitamin A' => $data->vit_a,
-                    'Nama Petugas' => $data->namaPetugas,
-                ];
-            },
-        );
+        $data = AllData::all();
+        $datax = AllData::all()->toArray();
+        $hasilx = getZscore($data);
+
+        //BB/U ->Median ->Simpangan Baku ->ZScore BB/U
+        $bbu = getBB_U($data);
+        //TB/U ->Median ->Simpangan Baku ->ZScore TB/U
+        $tbu = getTB_U($data);
+        //BB/TB ->Median ->Simpangan Baku ->ZScore BB/TB
+        $bbtb = getBB_TB($data);
+        //IMT/U ->Median ->Simpangan Baku ->ZScore IMT/U
+        $imtu = getIMT_U($data);
+
+        //****************** himpunan fuzzy ******************
+        //BB/U
+        $fuzzySet1 =  DB::table('fuzzy')
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 1)
+            ->get();
+        //TB/U PB/U
+        $fuzzySet2 =  DB::table('fuzzy')
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 2)
+            ->get();
+        //BB/TB BB/PB
+        $fuzzySet3 =  DB::table('fuzzy')
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 3)
+            ->get();
+        //IMT/U
+        $fuzzySet4 =  DB::table('fuzzy')
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 4)
+            ->get();
+
+        //******************************** FUZZY BB/U ****************************************//
+        //Menghitung Derajat Fuzzy Ke Setiap Himpunan
+        $resultFuzzyBB_U = [];
+        foreach ($bbu as $key => $bbuValue) {
+
+            $dataFuzzyBB_U = fuzzyBB_U($bbuValue['bbu'], $fuzzySet1);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyBB_U);
+
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyBB_U);
+
+            // Menyimpan data tertinggi ke dalam array resultFuzzyBB_U
+            $resultFuzzyBB_U[] = [
+                'BBSK' => $dataFuzzyBB_U['BBSK'],
+                'BBK' => $dataFuzzyBB_U['BBK'],
+                'BBN' => $dataFuzzyBB_U['BBN'],
+                'RBBL' => $dataFuzzyBB_U['RBBL'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+
+        //******************************** FUZZY TB/U ****************************************//
+        //Menghitung Derajat Fuzzy Ke Setiap Himpunan
+        $resultFuzzyTB_U = [];
+        foreach ($tbu as $key => $tbuValue) {
+
+            $dataFuzzyTB_U = fuzzyTB_U($tbuValue['tbu'], $fuzzySet2);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyTB_U);
+
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyTB_U);
+
+            // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
+            $resultFuzzyTB_U[] = [
+                'SP' => $dataFuzzyTB_U['SP'],
+                'P' => $dataFuzzyTB_U['P'],
+                'N' => $dataFuzzyTB_U['N'],
+                'T' => $dataFuzzyTB_U['T'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+
+        //******************************** FUZZY BB/TB ****************************************//
+        //Menghitung Derajat Fuzzy Ke Setiap Himpunan
+        $resultFuzzyBB_TB = [];
+        foreach ($bbtb as $key => $bbtbValue) {
+
+            $dataFuzzyBB_TB = fuzzyBB_TB($bbtbValue['bbtb'], $fuzzySet3);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyBB_TB);
+
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyBB_TB);
+
+            // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
+            $resultFuzzyBB_TB[] = [
+                'GBK' => $dataFuzzyBB_TB['GBK'],
+                'GK' => $dataFuzzyBB_TB['GK'],
+                'GB' => $dataFuzzyBB_TB['GB'],
+                'BGL' => $dataFuzzyBB_TB['BGL'],
+                'GL' => $dataFuzzyBB_TB['GL'],
+                'O' => $dataFuzzyBB_TB['O'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+
+        //******************************** FUZZY IMT/U ****************************************//
+        //Menghitung Derajat Fuzzy Ke Setiap Himpunan
+        $resultFuzzyIMT_U = [];
+        foreach ($imtu as $key => $imtValue) {
+
+            $dataFuzzyIMT_U = fuzzyBB_TB($imtValue['imtu'], $fuzzySet4);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyIMT_U);
+
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyIMT_U);
+
+            // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
+            $resultFuzzyIMT_U[] = [
+                'GBK' => $dataFuzzyIMT_U['GBK'],
+                'GK' => $dataFuzzyIMT_U['GK'],
+                'GB' => $dataFuzzyIMT_U['GB'],
+                'BGL' => $dataFuzzyIMT_U['BGL'],
+                'GL' => $dataFuzzyIMT_U['GL'],
+                'O' => $dataFuzzyIMT_U['O'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+        $combinedData = [
+            'datax' => $datax,
+            'hasilx' => $hasilx,
+            'bbu' => $bbu,
+            'resultFuzzyBB_U' => $resultFuzzyBB_U,
+            'tbu' => $tbu,
+            'resultFuzzyTB_U' => $resultFuzzyTB_U,
+            'bbtb' => $bbtb,
+            'resultFuzzyBB_TB' => $resultFuzzyBB_TB,
+            'imtu' => $imtu,
+            'resultFuzzyIMT_U' => $resultFuzzyIMT_U,
+        ];
+        // dd($combinedData);;
+
+        $resultData = [];
+        foreach ($combinedData['datax'] as $key => $data) {
+
+            if ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBSK') {
+                $fuzzyBBU = 'Berat Badan Sangat Kurang';
+            } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBK') {
+                $fuzzyBBU = 'Berat Badan Kurang';
+            } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBN') {
+                $fuzzyBBU = 'Berat Badan Normal';
+            } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'RBBL') {
+                $fuzzyBBU = 'Risiko Berat Badan Lebih';
+            }
+            //tbu
+            if ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'SP') {
+                $fuzzyTBU = 'Sangat Pendek';
+            } elseif ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'P') {
+                $fuzzyTBU = 'Pendek';
+            } elseif ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'N') {
+                $fuzzyTBU = 'Normal';
+            } elseif ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'T') {
+                $fuzzyTBU = 'Tingi';
+            }
+            //bbtb
+            if ($combinedData['resultFuzzyBB_TB'][$key] == 'GBK') {
+                $fuzzyBBTB = 'Gizi Buruk';
+            } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GK') {
+                $fuzzyBBTB = 'Gizi Kurang';
+            } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GB') {
+                $fuzzyBBTB = 'Gizi Baik';
+            } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'BGL') {
+                $fuzzyBBTB = 'Berisiko Gizi Berlebih';
+            } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GL') {
+                $fuzzyBBTB = 'Gizi Lebih';
+            } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'O') {
+                $fuzzyBBTB = 'Obesitas';
+            }
+            //imtu
+            if ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GBK') {
+                $fuzzyIMTU  = 'Gizi Buruk';
+            } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GK') {
+                $fuzzyIMTU = 'Gizi Kurang';
+            } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GB') {
+                $fuzzyIMTU = 'Gizi Baik';
+            } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'BGL') {
+                $fuzzyIMTU = 'Berisiko Gizi Berlebih';
+            } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GL') {
+                $fuzzyIMTU = 'Gizi Lebih';
+            } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'O') {
+                $fuzzyIMTU = 'Obesitas';
+            }
+            $resultDatax = [
+                'Nama' => $combinedData['datax'][$key]['nama'],
+                'Nama Ibu' => $combinedData['datax'][$key]['nama_ibu'],
+                'Nama Ayah' => $combinedData['datax'][$key]['nama_ayah'],
+                'Jenis Kelamin' => ($combinedData['datax'][$key]['jk'] == 1) ? 'Laki-laki' : 'Perempuan',
+                'Tempat Lahir' => $combinedData['datax'][$key]['tempat_lahir'],
+                'Tanggal Lahir' => $combinedData['datax'][$key]['tgl_lahir'],
+                'Bulan' => $combinedData['datax'][$key]['bln'],
+                'Tinggi Badan' => $combinedData['datax'][$key]['tb'],
+                'Berat Badan' => $combinedData['datax'][$key]['bb'],
+                'BMI' => round(10000 * $combinedData['datax'][$key]['bb'] / pow(($combinedData['datax'][$key]['tb'] * 0.01), 2), 2),
+
+                'Median BB/U' => $combinedData['bbu'][$key]['b'],
+                'SB BB/U' => ($combinedData['bbu'][$key]['a'] == null) ? $combinedData['bbu'][$key]['c'] : $combinedData['bbu'][$key]['a'],
+                'Zscore BB/U' => $combinedData['bbu'][$key]['bbu'],
+
+                'Median TB/U' => $combinedData['tbu'][$key]['b'],
+                'SB TB/U' => ($combinedData['tbu'][$key]['a'] == null) ? $combinedData['tbu'][$key]['c'] : $combinedData['tbu'][$key]['a'],
+                'Zscore TB/U' => $combinedData['tbu'][$key]['tbu'],
+
+                'Median BB/TB' => $combinedData['bbtb'][$key]['b'],
+                'SB BB/TB' => ($combinedData['bbtb'][$key]['a'] == null) ? $combinedData['bbtb'][$key]['c'] : $combinedData['bbtb'][$key]['a'],
+                'Zscore BB/TB' => $combinedData['bbtb'][$key]['bbtb'],
+
+                'Median IMT/U' => $combinedData['imtu'][$key]['b'],
+                'SB IMT/U' => ($combinedData['imtu'][$key]['a'] == null) ? $combinedData['imtu'][$key]['c'] : $combinedData['imtu'][$key]['a'],
+                'Zscore IMT/U' => $combinedData['imtu'][$key]['imtu'],
+
+                'BB/U' => $combinedData['hasilx'][$key]['bb'],
+                'Fuzzy BB/U' => $fuzzyBBU,
+                'TB/U' => $combinedData['hasilx'][$key]['tb'],
+                'Fuzzy TB/U' => $fuzzyTBU,
+                'BB/TB' =>$combinedData['hasilx'][$key]['bt'],
+                'Fuzzy BB/TB' => $fuzzyBBTB,
+                'IMTU/U' => $combinedData['hasilx'][$key]['imt'],
+                'Fuzzy IMTU/U' => $fuzzyIMTU,
+            ];
+            $resultData[] = $resultDatax;
+        }
+        //dd(count($resultData),$resultData);
+
+        return FastExcel($resultData)->download('file.xlsx');
+        
     }
 
     public function fuzzy()
@@ -794,81 +677,7 @@ ANAK
             return redirect()->route('admin.fuzzy');
         }
     }
-    // public function getAnakPosyandu()
-    // {
-    //     $data = Anak::select('id', 'nama', 'nama_ibu', 'nama_ayah', 'jk', 'tempat_lahir', 'tgl_lahir')
-    //     ->where('id_posyandu',Auth::user()->id_posyandu);
-    //     return DataTables::of($data)
-    //         ->addIndexColumn()
-    //         ->editColumn('edit', function ($data) {
-    //             //$btn = '<a class="btn btn-warning" href="#" target="_blank">edit</a>';
-    //             $btn = '
-    //             <div class="dropdown">
-    //             <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    //                Edit
-    //             </button>
-    //             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    //                 <a class="dropdown-item" href="' . route('admin.editAnak', $data->id) . '">Edit Data Anak</a>
-    //                 <a class="dropdown-item" href="' . route('admin.chartAnak', $data->id) . '">Grafik Data Anak</a>
-    //                 <a class="dropdown-item" href="' . route('admin.showAnak', $data->id) . '">Show Data Anak</a>
-    //                 <a class="dropdown-item" href="' . route('admin.dataAnak', $data->id) . '">Tambah Data Berkala Anak</a>
-    //             </div>
-    //             </div>
-    //             ';
-    //             return $btn;
-    //         })
-    //         ->setRowId('id')
-    //         ->editColumn('delete', function ($data) {
-    //             $btn = ' <button onclick="deleteItemAnak(this)" class="btn btn-danger" data-id=' . $data->id . '>Delete</button>';
-    //             return $btn;
-    //         })
-    //         ->rawColumns(['edit'])
-    //         ->rawColumns(['delete'])
-    //         ->escapeColumns([])
-    //         ->make(true);
-    // }
-
-
-    // public function getPuskesmasAnak($id)
-    // {
-    //     $puskesmas = Puskesmas::where('id_kecamatan', $id)->pluck('name', 'id');
-    //     return response()->json($puskesmas);
-    // }
-
-    // public function getKelAnak($id)
-    // {
-    //     $kel = Kelurahan::where('id_kecamatan', $id)->pluck('name', 'id');
-    //     return response()->json($kel);
-    // }
-
-    // public function getRtAnak($id)
-    // {
-    //     $rt = Rt::where('id_kelurahan', $id)->pluck('name', 'id', 'id_posyandu');
-    //     return response()->json($rt);
-    // }
-    // public function getRtAnakPosyandu($id)
-    // {
-    //     $rt = Rt::where('id', $id)->pluck('id_posyandu');
-    //     return response()->json($rt);
-    // }
-
-    // public function getRtAnak($id)
-    // {
-    //     $rt = Rt::where('id_posyandu', $id)->pluck('name', 'id');
-    //     return response()->json($rt);
-    // }
-
-    // public function getPosyanduAnak($id)
-    // {
-    //     $posyandu = Posyandu::where('id', $id)->pluck('name', 'id');
-    //     return response()->json($posyandu);
-    // }
-    // public function getPosyanduAnak($id)
-    // {
-    //     $posyandu = Posyandu::where('id_puskesmas', $id)->pluck('name', 'id');
-    //     return response()->json($posyandu);
-    // }
-
+    // 
 
     /*------------------------------------------
 --------------------------------------------

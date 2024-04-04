@@ -15,9 +15,14 @@ Anak
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         Data Anak
-        <a href="{{route('admin.createAnak')}}" class="btn btn-primary">
-            <font color="white"> <i class="fa fa-plus-circle" aria-hidden="true"></i> Tambah Data</font>
-        </a>
+        <div>
+            <a href="{{route('admin.createAnak')}}" class="btn btn-primary">
+                <font color="white"> <i class="fa fa-plus-circle" aria-hidden="true"></i> Tambah Data</font>
+            </a>
+            <a href="{{route('admin.exportAllExcel')}}" class="btn btn-success">
+                <font color="white"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export Data</font>
+            </a>
+        </div>
     </div>
     <div class="card-body">
         @if (Auth::user()->type == 'super-admin')
