@@ -131,9 +131,9 @@ Show Data Anak
                         </div>
                         <div class="form-group">
                             <label>SB TB/U</label>
-                            @if($bbuData['a'] == null)
+                            @if($tbuData['a'] == null)
                             <input type="text" value="{{$tbuData['c']}}" class="form-control" readonly>
-                            @elseif($bbuData['c'] == null)
+                            @elseif($tbuData['c'] == null)
                             <input type="text" value="{{$tbuData['a']}}" class="form-control" readonly>
                             @endif
                         </div>
@@ -149,9 +149,9 @@ Show Data Anak
                         </div>
                         <div class="form-group">
                             <label>SB BB/TB</label>
-                            @if($bbuData['a'] == null)
+                            @if($bbtbData['a'] == null)
                             <input type="text" value="{{$bbtbData['c']}}" class="form-control" readonly>
-                            @elseif($bbuData['c'] == null)
+                            @elseif($bbtbData['c'] == null)
                             <input type="text" value="{{$bbtbData['a']}}" class="form-control" readonly>
                             @endif
                         </div>
@@ -167,9 +167,9 @@ Show Data Anak
                         </div>
                         <div class="form-group">
                             <label>SB IMT/U</label>
-                            @if($bbuData['a'] == null)
+                            @if($imtuData['a'] == null)
                             <input type="text" value="{{$imtuData['c']}}" class="form-control" readonly>
-                            @elseif($bbuData['c'] == null)
+                            @elseif($imtuData['c'] == null)
                             <input type="text" value="{{$imtuData['a']}}" class="form-control" readonly>
                             @endif
                         </div>

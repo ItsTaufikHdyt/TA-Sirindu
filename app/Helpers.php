@@ -21,7 +21,7 @@ function getZscore($x)
         $tinggi = round($tinggix);
         $var = $umur <= 24 ? 1 : 2;
         $jk = $data->jk;
-        $bmi = round(10000 * $berat / pow($tinggi, 2), 2);
+        $bmi = $berat / pow($tinggi, 2);
 
         $err = NULL;
         if ($bmi < 10.2 || $bmi > 21.1) {
@@ -73,37 +73,37 @@ function getZscore($x)
 
         if ($umur <= 60) {
             if ($bmi < $imt_u[0]->a1) {
-                $s1 = "Gizi buruk (severely wasted)";
+                $s1 = "Gizi buruk";
             } elseif ($bmi >= $imt_u[0]->a1 && $bmi < $imt_u[0]->b1) {
-                $s1 = "Gizi kurang (wasted)";
+                $s1 = "Gizi kurang";
             } elseif ($bmi >= $imt_u[0]->b1 && $bmi <= $imt_u[0]->c1) {
-                $s1 = "Gizi baik (normal)";
+                $s1 = "Gizi baik";
             } elseif ($bmi > $imt_u[0]->c1 && $bmi <= $imt_u[0]->d1) {
-                $s1 = "Berisiko gizi lebih (possible risk of overweight)";
+                $s1 = "Berisiko gizi lebih";
             } elseif ($bmi > $imt_u[0]->d1 && $bmi <= $imt_u[0]->e1) {
-                $s1 = "Gizi lebih (overweight)";
+                $s1 = "Gizi lebih";
             } else {
-                $s1 = "Obesitas (obese)";
+                $s1 = "Obesitas";
             }
         } elseif ($umur > 60) {
             if ($bmi < $imt_u[0]->a1) {
-                $s1 = "Gizi buruk (severely thinness)";
+                $s1 = "Gizi buruk";
             } elseif ($bmi >= $imt_u[0]->a1 && $bmi < $imt_u[0]->b1) {
-                $s1 = "Gizi kurang (thinness)";
+                $s1 = "Gizi kurang";
             } elseif ($bmi >= $imt_u[0]->b1 && $bmi <= $imt_u[0]->c1) {
-                $s1 = "Gizi baik (normal)";
+                $s1 = "Gizi baik";
             } elseif ($bmi > $imt_u[0]->c1 && $bmi <= $imt_u[0]->d1) {
-                $s1 = "Gizi lebih (overweight)";
+                $s1 = "Gizi lebih";
             } else {
-                $s1 = "Obesitas (obese)";
+                $s1 = "Obesitas";
             }
         }
 
 
         if ($berat < $bb_u[0]->a2) {
-            $s2 = "Berat badan sangat kurang (severely underweight)";
+            $s2 = "Berat badan sangat kurang";
         } elseif ($berat >= $bb_u[0]->a2 && $berat < $bb_u[0]->b2) {
-            $s2 = "Berat badan kurang (underweight)";
+            $s2 = "Berat badan kurang";
         } elseif ($berat >= $bb_u[0]->b2 && $berat <= $bb_u[0]->c2) {
             $s2 = "Berat badan normal";
         } else {
@@ -111,9 +111,9 @@ function getZscore($x)
         }
 
         if ($tinggi < $tb_u[0]->a3) {
-            $s3 = "Sangat pendek (severely stunted)";
+            $s3 = "Sangat pendek";
         } elseif ($tinggi >= $tb_u[0]->a3 && $tinggi < $tb_u[0]->b3) {
-            $s3 = "Pendek (stunted)";
+            $s3 = "Pendek";
         } elseif ($tinggi >= $tb_u[0]->b3 && $tinggi <= $tb_u[0]->e3) {
             $s3 = "Normal";
         } else {
@@ -121,9 +121,9 @@ function getZscore($x)
         }
 
         if ($tinggi < $tb_u[0]->a3) {
-            $s3 = "Sangat pendek (severely stunted)";
+            $s3 = "Sangat pendek";
         } elseif ($tinggi >= $tb_u[0]->a3 && $tinggi < $tb_u[0]->b3) {
-            $s3 = "Pendek (stunted)";
+            $s3 = "Pendek";
         } elseif ($tinggi >= $tb_u[0]->b3 && $tinggi <= $tb_u[0]->e3) {
             $s3 = "Normal";
         } else {
@@ -131,17 +131,17 @@ function getZscore($x)
         }
         try {
             if ($berat < $bt_tb[0]->a4) {
-                $s4 = "Gizi buruk (severely wasted)";
+                $s4 = "Gizi buruk";
             } elseif ($berat >= $bt_tb[0]->a4 && $berat < $bt_tb[0]->b4) {
-                $s4 = "Gizi kurang (wasted)";
+                $s4 = "Gizi kurang";
             } elseif ($berat >= $bt_tb[0]->b4 && $berat <= $bt_tb[0]->c4) {
-                $s4 = "Gizi baik (normal)";
+                $s4 = "Gizi baik";
             } elseif ($berat > $bt_tb[0]->c4 && $berat <= $bt_tb[0]->d4) {
-                $s4 = "Berisiko gizi lebih (possible risk of overweight)";
+                $s4 = "Berisiko gizi lebih";
             } elseif ($berat > $bt_tb[0]->d4 && $berat <= $bt_tb[0]->e4) {
-                $s4 = "Gizi lebih (overweight)";
+                $s4 = "Gizi lebih";
             } else {
-                $s4 = "Obesitas (obese)";
+                $s4 = "Obesitas";
             }
         } catch (\Exception $e) {
             // dump('culprit : '.$key.', Error : '.$e->getMessage());
@@ -192,8 +192,14 @@ function getIMT_U($x)
 
         if ($imt < $b) {
             $imtu = ($imt - $b) / ($b - $a);
+            $a = $a;
+            $b = $b;
+            $c = null;
         } elseif ($imt > $b) {
             $imtu = ($imt - $b) / ($c - $b);
+            $a = null;
+            $b = $b;
+            $c = $c;
         }
 
         $imtuData[] = [
@@ -291,8 +297,14 @@ function getTB_U($x)
 
         if ($tb < $b) {
             $tbu = ($tb - $b) / ($b - $a);
+            $a = $a;
+            $b = $b;
+            $c = null;
         } elseif ($tb > $b) {
             $tbu = ($tb - $b) / ($c - $b);
+            $a = null;
+            $b = $b;
+            $c = $c;
         }
 
         $tbuData[] = [
@@ -343,8 +355,14 @@ function getBB_TB($x)
       
         if ($bb < $b) {
             $bbtb = ($bb - $b) / ($b - $a);
+            $a = $a;
+            $b = $b;
+            $c = null;
         } elseif ($bb > $b) {
             $bbtb = ($bb - $b) / ($c - $b);
+            $a = null;
+            $b = $b;
+            $c = $c;
         }
 
         $bbTbData[] = [

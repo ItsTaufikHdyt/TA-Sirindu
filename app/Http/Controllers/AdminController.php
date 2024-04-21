@@ -536,11 +536,10 @@ ANAK
             'imtu' => $imtu,
             'resultFuzzyIMT_U' => $resultFuzzyIMT_U,
         ];
-        // dd($combinedData);;
+        //dd($combinedData);;
 
         $resultData = [];
         foreach ($combinedData['datax'] as $key => $data) {
-
             if ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBSK') {
                 $fuzzyBBU = 'Berat Badan Sangat Kurang';
             } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBK') {
@@ -598,7 +597,7 @@ ANAK
                 'Bulan' => $combinedData['datax'][$key]['bln'],
                 'Tinggi Badan' => $combinedData['datax'][$key]['tb'],
                 'Berat Badan' => $combinedData['datax'][$key]['bb'],
-                'BMI' => round(10000 * $combinedData['datax'][$key]['bb'] / pow(($combinedData['datax'][$key]['tb'] * 0.01), 2), 2),
+                'BMI' => $combinedData['datax'][$key]['bb'] / pow(($combinedData['datax'][$key]['tb'] * 0.01), 2),
 
                 'Median BB/U' => $combinedData['bbu'][$key]['b'],
                 'SB BB/U' => ($combinedData['bbu'][$key]['a'] == null) ? $combinedData['bbu'][$key]['c'] : $combinedData['bbu'][$key]['a'],
@@ -617,19 +616,42 @@ ANAK
                 'Zscore IMT/U' => $combinedData['imtu'][$key]['imtu'],
 
                 'BB/U' => $combinedData['hasilx'][$key]['bb'],
+                'BBSK' => $combinedData['resultFuzzyBB_U'][$key]['BBSK'],
+                'BBK' => $combinedData['resultFuzzyBB_U'][$key]['BBK'],
+                'BBN' => $combinedData['resultFuzzyBB_U'][$key]['BBN'],
+                'RBBL' => $combinedData['resultFuzzyBB_U'][$key]['RBBL'],
                 'Fuzzy BB/U' => $fuzzyBBU,
+
                 'TB/U' => $combinedData['hasilx'][$key]['tb'],
+                'SP' => $combinedData['resultFuzzyTB_U'][$key]['SP'],
+                'P' => $combinedData['resultFuzzyTB_U'][$key]['P'],
+                'N' => $combinedData['resultFuzzyTB_U'][$key]['N'],
+                'T' => $combinedData['resultFuzzyTB_U'][$key]['T'],
                 'Fuzzy TB/U' => $fuzzyTBU,
+
                 'BB/TB' =>$combinedData['hasilx'][$key]['bt'],
+                'GBK' =>$combinedData['resultFuzzyBB_TB'][$key]['GBK'],
+                'GK' =>$combinedData['resultFuzzyBB_TB'][$key]['GK'],
+                'GB' =>$combinedData['resultFuzzyBB_TB'][$key]['GB'],
+                'BGL' =>$combinedData['resultFuzzyBB_TB'][$key]['BGL'],
+                'GL' =>$combinedData['resultFuzzyBB_TB'][$key]['GL'],
+                'O' =>$combinedData['resultFuzzyBB_TB'][$key]['O'],
                 'Fuzzy BB/TB' => $fuzzyBBTB,
+
                 'IMTU/U' => $combinedData['hasilx'][$key]['imt'],
+                'GBK-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GBK'],
+                'GK-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GK'],
+                'GB-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GB'],
+                'BGL-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['BGL'],
+                'GL-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GL'],
+                'O-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['O'],
                 'Fuzzy IMTU/U' => $fuzzyIMTU,
             ];
             $resultData[] = $resultDatax;
         }
         //dd(count($resultData),$resultData);
 
-        return FastExcel($resultData)->download('file.xlsx');
+        return FastExcel($resultData)->download('data-anak.xlsx');
         
     }
 
