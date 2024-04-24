@@ -596,6 +596,7 @@ ANAK
                 'Tempat Lahir' => $combinedData['datax'][$key]['tempat_lahir'],
                 'Tanggal Lahir' => $combinedData['datax'][$key]['tgl_lahir'],
                 'Bulan' => $combinedData['datax'][$key]['bln'],
+                'Posisi' => $combinedData['datax'][$key]['posisi'],
                 'Tinggi Badan' => $combinedData['datax'][$key]['tb'],
                 'Berat Badan' => $combinedData['datax'][$key]['bb'],
                 'BMI' => $combinedData['datax'][$key]['bb'] / pow(($combinedData['datax'][$key]['tb'] * 0.01), 2),
@@ -668,7 +669,9 @@ ANAK
                 // 'IMTU/U' => $combinedData['hasilx'][$key]['imt'],
 
             ];
-            $resultData[] = $resultDatax;
+            array_push($resultData, $resultDatax);
+
+            //$resultData[] = $resultDatax;
         }
         // dd(count($resultData),$resultData[10]);
 
