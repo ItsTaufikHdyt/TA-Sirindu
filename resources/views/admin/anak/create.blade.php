@@ -77,6 +77,15 @@ Anak
         </div>
         <div class="col-md-4 col-sm-12">
             <div class="form-group">
+                <label>Posisi<font color="red">*</font></label>
+                <select name="posisi" class="form-control" require>
+                    <option value="H">High (Berdiri)</option>
+                    <option value="L">Low (Berbaring)</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
                 <label>Tinggi Badan <font color="red">* gunakan titik (.) untuk koma</font></label>
                 <input type="text" name="tb" class="form-control" require>
             </div>

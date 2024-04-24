@@ -111,8 +111,8 @@ Edit Anak
             <div class="form-group">
                 <label>Posisi</label>
                 <select name="posisi" class="form-control" require>
-                    <option value="H" @if($data->posisi == 'H') selected @endif>H</option>
-                    <option value="L" @if($data->posisi == 'L') selected @endif>L</option>
+                    <option value="H" @if($data->posisi == 'H') selected @endif>H (Berdiri)</option>
+                    <option value="L" @if($data->posisi == 'L') selected @endif>L (Berbaring)</option>
                 </select>
                 <label>Tinggi Badan <font color="red">* titik (.) untuk koma</font></label>
                 <input type="text" name="tb" value="{{$data->tb}}" class="form-control" require>

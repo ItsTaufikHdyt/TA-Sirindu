@@ -21,7 +21,7 @@ function getZscore($x)
         $tinggi = round($tinggix);
         $var = $umur <= 24 ? 1 : 2;
         $jk = $data->jk;
-        $bmi = $berat / pow($tinggi, 2);
+        $bmi = round(10000 * $berat / pow($tinggi, 2), 2);
 
         $err = NULL;
         if ($bmi < 10.2 || $bmi > 21.1) {
@@ -275,12 +275,11 @@ function getTB_U($x)
         $umur = $data->bln;
         $var = $umur <= 24 ? 1 : 2;
         if ($umur < 24 && $posisi == "H") {
-            $tb += 0.7;
+            $tb+= 0.7;
         } elseif ($umur >= 24 && $posisi == "L") {
             $tb -= 0.7;
         }
         $tinggi = round($tb);
-
         $tbumedian = DB::table('z_score')
             ->select('id', 'm1sd as a', 'sd as b', '1sd as c')
             ->where([
@@ -296,12 +295,12 @@ function getTB_U($x)
         }
 
         if ($tb < $b) {
-            $tbu = ($tb - $b) / ($b - $a);
+            $tbu = ($tinggi - $b) / ($b - $a);
             $a = $a;
             $b = $b;
             $c = null;
         } elseif ($tb > $b) {
-            $tbu = ($tb - $b) / ($c - $b);
+            $tbu = ($tinggi - $b) / ($c - $b);
             $a = null;
             $b = $b;
             $c = $c;
@@ -419,6 +418,7 @@ function fuzzySegitiga($x, $a, $b, $c)
     $b = $b;
     $c = $c;
     $x = $x;
+
     $hasil = '';
     if ($x <= $a || $x >= $c) {
         $hasil = 0;

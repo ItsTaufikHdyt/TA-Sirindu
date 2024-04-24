@@ -272,7 +272,7 @@ ANAK
                 'maxValue' => $maxValue
             ];
         }
-        // dd($bbtb,$resultFuzzyBB_TB);
+        //dd($bbtb,$resultFuzzyBB_TB);
 
         //******************************** FUZZY IMT/U ****************************************//
         //Menghitung Derajat Fuzzy Ke Setiap Himpunan
@@ -474,7 +474,6 @@ ANAK
                 'maxValue' => $maxValue
             ];
         }
-
         //******************************** FUZZY BB/TB ****************************************//
         //Menghitung Derajat Fuzzy Ke Setiap Himpunan
         $resultFuzzyBB_TB = [];
@@ -499,7 +498,7 @@ ANAK
                 'maxValue' => $maxValue
             ];
         }
-
+        // dd($bbtb[10],$resultFuzzyBB_TB[10]);
         //******************************** FUZZY IMT/U ****************************************//
         //Menghitung Derajat Fuzzy Ke Setiap Himpunan
         $resultFuzzyIMT_U = [];
@@ -536,10 +535,11 @@ ANAK
             'imtu' => $imtu,
             'resultFuzzyIMT_U' => $resultFuzzyIMT_U,
         ];
-        //dd($combinedData);;
+        
 
         $resultData = [];
         foreach ($combinedData['datax'] as $key => $data) {
+            
             if ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBSK') {
                 $fuzzyBBU = 'Berat Badan Sangat Kurang';
             } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBK') {
@@ -560,7 +560,7 @@ ANAK
                 $fuzzyTBU = 'Tingi';
             }
             //bbtb
-            if ($combinedData['resultFuzzyBB_TB'][$key] == 'GBK') {
+            if ($combinedData['resultFuzzyBB_TB'][$key]['maxKey']  == 'GBK') {
                 $fuzzyBBTB = 'Gizi Buruk';
             } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GK') {
                 $fuzzyBBTB = 'Gizi Kurang';
@@ -587,6 +587,7 @@ ANAK
             } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'O') {
                 $fuzzyIMTU = 'Obesitas';
             }
+            
             $resultDatax = [
                 'Nama' => $combinedData['datax'][$key]['nama'],
                 'Nama Ibu' => $combinedData['datax'][$key]['nama_ibu'],
@@ -615,21 +616,20 @@ ANAK
                 'SB IMT/U' => ($combinedData['imtu'][$key]['a'] == null) ? $combinedData['imtu'][$key]['c'] : $combinedData['imtu'][$key]['a'],
                 'Zscore IMT/U' => $combinedData['imtu'][$key]['imtu'],
 
-                'BB/U' => $combinedData['hasilx'][$key]['bb'],
                 'BBSK' => $combinedData['resultFuzzyBB_U'][$key]['BBSK'],
                 'BBK' => $combinedData['resultFuzzyBB_U'][$key]['BBK'],
                 'BBN' => $combinedData['resultFuzzyBB_U'][$key]['BBN'],
                 'RBBL' => $combinedData['resultFuzzyBB_U'][$key]['RBBL'],
                 'Fuzzy BB/U' => $fuzzyBBU,
+                'BB/U' => $combinedData['hasilx'][$key]['bb'],
 
-                'TB/U' => $combinedData['hasilx'][$key]['tb'],
                 'SP' => $combinedData['resultFuzzyTB_U'][$key]['SP'],
                 'P' => $combinedData['resultFuzzyTB_U'][$key]['P'],
                 'N' => $combinedData['resultFuzzyTB_U'][$key]['N'],
                 'T' => $combinedData['resultFuzzyTB_U'][$key]['T'],
                 'Fuzzy TB/U' => $fuzzyTBU,
+                'TB/U' => $combinedData['hasilx'][$key]['tb'],
 
-                'BB/TB' =>$combinedData['hasilx'][$key]['bt'],
                 'GBK' =>$combinedData['resultFuzzyBB_TB'][$key]['GBK'],
                 'GK' =>$combinedData['resultFuzzyBB_TB'][$key]['GK'],
                 'GB' =>$combinedData['resultFuzzyBB_TB'][$key]['GB'],
@@ -637,8 +637,8 @@ ANAK
                 'GL' =>$combinedData['resultFuzzyBB_TB'][$key]['GL'],
                 'O' =>$combinedData['resultFuzzyBB_TB'][$key]['O'],
                 'Fuzzy BB/TB' => $fuzzyBBTB,
+                'BB/TB' =>$combinedData['hasilx'][$key]['bt'],
 
-                'IMTU/U' => $combinedData['hasilx'][$key]['imt'],
                 'GBK-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GBK'],
                 'GK-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GK'],
                 'GB-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GB'],
@@ -646,13 +646,33 @@ ANAK
                 'GL-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GL'],
                 'O-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['O'],
                 'Fuzzy IMTU/U' => $fuzzyIMTU,
+                'IMTU/U' => $combinedData['hasilx'][$key]['imt'],
+
+                // 'Nama' => $combinedData['datax'][$key]['nama'],
+                // 'Nama Ibu' => $combinedData['datax'][$key]['nama_ibu'],
+                // 'Nama Ayah' => $combinedData['datax'][$key]['nama_ayah'],
+                // 'Jenis Kelamin' => ($combinedData['datax'][$key]['jk'] == 1) ? 'Laki-laki' : 'Perempuan',
+                // 'Tempat Lahir' => $combinedData['datax'][$key]['tempat_lahir'],
+                // 'Tanggal Lahir' => $combinedData['datax'][$key]['tgl_lahir'],
+                // 'Bulan' => $combinedData['datax'][$key]['bln'],
+                // 'Tinggi Badan' => $combinedData['datax'][$key]['tb'],
+                // 'Berat Badan' => $combinedData['datax'][$key]['bb'],
+                // 'BMI' => $combinedData['datax'][$key]['bb'] / pow(($combinedData['datax'][$key]['tb'] * 0.01), 2),
+                // 'Fuzzy BB/U' => $fuzzyBBU,
+                // 'BB/U' => $combinedData['hasilx'][$key]['bb'],
+                // 'Fuzzy TB/U' => $fuzzyTBU,
+                // 'TB/U' => $combinedData['hasilx'][$key]['tb'],
+                // 'Fuzzy BB/TB' => $fuzzyBBTB,
+                // 'BB/TB' => $combinedData['hasilx'][$key]['bt'],
+                // 'Fuzzy IMTU/U' => $fuzzyIMTU,
+                // 'IMTU/U' => $combinedData['hasilx'][$key]['imt'],
+
             ];
             $resultData[] = $resultDatax;
         }
-        //dd(count($resultData),$resultData);
+        // dd(count($resultData),$resultData[10]);
 
         return FastExcel($resultData)->download('data-anak.xlsx');
-        
     }
 
     public function fuzzy()

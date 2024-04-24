@@ -46,7 +46,7 @@ class AnakRepository implements AnakRepositoryInterface
         DataAnak::create([
             'id_anak' => $anak_baru->id,
             'bln' => $request->bln,
-            'posisi' => 'L',
+            'posisi' => $request->posisi,
             'tb' => $request->tb,
             'bb' => $request->bb,
             'id_user' => Auth::user()->id,
