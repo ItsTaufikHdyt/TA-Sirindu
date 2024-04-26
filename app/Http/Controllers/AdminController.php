@@ -673,7 +673,7 @@ ANAK
 
             //$resultData[] = $resultDatax;
         }
-        // dd(count($resultData),$resultData[10]);
+     // dd(count($resultData),$resultData[10]);
 
         return FastExcel($resultData)->download('data-anak.xlsx');
     }
