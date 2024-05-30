@@ -24,7 +24,7 @@ Edit User
     </button>
 </div>
 @endif
-<form method="post" action="{{route('super.admin.updateUser',$user->id)}}">
+<form method="post" action="{{route('admin.updateUser',$user->id)}}">
     @csrf
     <input type="hidden" name="_method" value="PUT">
     <div class="row">
@@ -46,8 +46,8 @@ Edit User
             <div class="form-group">
                 <label>Type</label>
                 <select class="form-control" name="type">
-                    <option value="0" {{$user->type == 'super-admin' ? 'selected' : ''}}>Super Admin</option>
-                    <option value="1" {{$user->type == 'admin' ? 'selected' : ''}}>Admin</option>
+                    <option value="0" {{$user->type == 'admin' ? 'selected' : ''}}>Admin</option>
+                    <option value="1" {{$user->type == 'opd' ? 'selected' : ''}}>OPD</option>
                 </select>
                 @error('type') <span class="text-danger">{{ $message }}</span>@enderror
             </div>

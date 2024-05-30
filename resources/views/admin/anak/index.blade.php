@@ -25,8 +25,6 @@ Anak
         </div>
     </div>
     <div class="card-body">
-        @if (Auth::user()->type == 'super-admin')
-        <br><br>
         <div class="table-responsive">
             <table id="tabel-anak" class="table table-striped">
                 <thead>
@@ -42,23 +40,6 @@ Anak
                 </tbody>
             </table>
         </div>
-        @elseif (Auth::user()->type == 'admin')
-        <div class="table-responsive">
-            <table id="tabel-anak-adm" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Nama Ibu</th>
-                        <th scope="col">Nama Ayah</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        @endif
     </div>
 </div>
 @endsection

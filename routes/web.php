@@ -38,15 +38,15 @@ All Normal Users Routes List
 All Super Admin Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:super-admin'])->prefix('super-admin/')->group(function () {
-    Route::get('home', [App\Http\Controllers\AdminController::class, 'superAdminHome'])->name('super.admin.home');
-    //User Route List
-    Route::get('user', [App\Http\Controllers\AdminController::class, 'user'])->name('super.admin.user');
-    Route::post('store-user', [App\Http\Controllers\AdminController::class, 'storeUser'])->name('super.admin.storeUser');
-    Route::get('edit-user/{id}', [App\Http\Controllers\AdminController::class, 'editUser'])->name('super.admin.editUser');
-    Route::put('update-user/{id}', [App\Http\Controllers\AdminController::class, 'updateUser'])->name('super.admin.updateUser');
-    Route::delete('delete-user/{id}', [App\Http\Controllers\AdminController::class, 'destroyUser'])->name('super.admin.destroyUser');
-});
+// Route::middleware(['auth', 'user-access:admin'])->prefix('admin/')->group(function () {
+//     Route::get('home', [App\Http\Controllers\AdminController::class, 'superAdminHome'])->name('super.admin.home');
+//     //User Route List
+//     Route::get('user', [App\Http\Controllers\AdminController::class, 'user'])->name('super.admin.user');
+//     Route::post('store-user', [App\Http\Controllers\AdminController::class, 'storeUser'])->name('super.admin.storeUser');
+//     Route::get('edit-user/{id}', [App\Http\Controllers\AdminController::class, 'editUser'])->name('super.admin.editUser');
+//     Route::put('update-user/{id}', [App\Http\Controllers\AdminController::class, 'updateUser'])->name('super.admin.updateUser');
+//     Route::delete('delete-user/{id}', [App\Http\Controllers\AdminController::class, 'destroyUser'])->name('super.admin.destroyUser');
+// });
 
 /*------------------------------------------
 --------------------------------------------
@@ -55,6 +55,13 @@ All Admin Routes List
 --------------------------------------------*/
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin/')->group(function () {
+    //User Route List
+    Route::get('user', [App\Http\Controllers\AdminController::class, 'user'])->name('admin.user');
+    Route::post('store-user', [App\Http\Controllers\AdminController::class, 'storeUser'])->name('admin.storeUser');
+    Route::get('edit-user/{id}', [App\Http\Controllers\AdminController::class, 'editUser'])->name('admin.editUser');
+    Route::put('update-user/{id}', [App\Http\Controllers\AdminController::class, 'updateUser'])->name('admin.updateUser');
+    Route::delete('delete-user/{id}', [App\Http\Controllers\AdminController::class, 'destroyUser'])->name('admin.destroyUser');
+    //user
     Route::get('home', [App\Http\Controllers\AdminController::class, 'adminHome'])->name('admin.home');
     //Anak Route List
     Route::get('data-dasar-anak', [App\Http\Controllers\AdminController::class, 'anak'])->name('admin.anak');
@@ -84,12 +91,21 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin/')->group(function () {
     Route::post('store-fuzzy', [App\Http\Controllers\AdminController::class, 'storeFuzzy'])->name('admin.storeFuzzy');
     Route::put('update-fuzzy/{id}', [App\Http\Controllers\AdminController::class, 'updateFuzzy'])->name('admin.updateFuzzy');
     Route::delete('destroy-fuzzy/{id}', [App\Http\Controllers\AdminController::class, 'destroyFuzzy'])->name('admin.destroyFuzzy');
-    //Data Imunisasi Anak Route List
-    Route::get('data-imunisasi-anak/{id}', [App\Http\Controllers\AdminController::class, 'dataImunisasi'])->name('admin.dataImunisasi');
-    Route::put('update-data-imunisasi-anak/{id}', [App\Http\Controllers\AdminController::class, 'updateImunisasi'])->name('admin.updateImunisasi');
+    // //Data Imunisasi Anak Route List
+    // Route::get('data-imunisasi-anak/{id}', [App\Http\Controllers\AdminController::class, 'dataImunisasi'])->name('admin.dataImunisasi');
+    // Route::put('update-data-imunisasi-anak/{id}', [App\Http\Controllers\AdminController::class, 'updateImunisasi'])->name('admin.updateImunisasi');
     //Data Export Anak
     Route::get('export', [App\Http\Controllers\AdminController::class, 'exportView'])->name('admin.exportView');
     Route::get('exportAllExcel', [App\Http\Controllers\AdminController::class, 'exportAllExcel'])->name('admin.exportAllExcel');
     
 });
 
+//opd
+
+Route::middleware(['auth', 'user-access:opd'])->prefix('opd/')->group(function () {
+Route::get('opd', [App\Http\Controllers\OpdController::class, 'index'])->name('opd.home');
+Route::get('data-dasar-anak', [App\Http\Controllers\OpdController::class, 'anak'])->name('opd.anak');
+Route::get('get-data-dasar-anak', [App\Http\Controllers\OpdController::class, 'getAnak'])->name('opd.getAnak');
+Route::get('show-data-dasar-anak/{id}', [App\Http\Controllers\OpdController::class, 'showAnak'])->name('opd.showAnak');
+Route::get('exportAllExcel', [App\Http\Controllers\OpdController::class, 'exportAllExcel'])->name('opd.exportAllExcel');
+});

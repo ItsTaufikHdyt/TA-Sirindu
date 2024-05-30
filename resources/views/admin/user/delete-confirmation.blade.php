@@ -1,7 +1,7 @@
 <div class="modal fade destroyAbout" id="confirmationModal{{$data->id}}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form method="POST" action="{{route('super.admin.destroyUser', $data->id)}}">
+            <form method="POST" action="{{route('admin.destroyUser', $data->id)}}">
                 @csrf
                 {{ method_field('DELETE')}}
                 <div class="modal-body text-center font-18">

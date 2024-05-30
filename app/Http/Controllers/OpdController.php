@@ -2,56 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AllExport;
-use App\Repositories\Admin\User\UserRepository as UserInterface;
-use App\Repositories\Admin\Anak\AnakRepository as AnakInterface;
-use App\Repositories\Admin\Fuzzy\FuzzyRepository as FuzzyInterface;
-use App\Http\Requests\Admin\User\storeUserRequest;
-use App\Http\Requests\Admin\Anak\storeAnakRequest;
-use App\Models\Anak;
-use App\Models\DataAnak;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use App\Exports\AnakExport;
-use App\Models\AllData;
-use App\Models\Fuzzy;
-use Maatwebsite\Excel\Facades\Excel;
-use Rap2hpoutre\FastExcel\FastExcel;
-
-
-use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use App\Models\Anak;
+use App\Models\AllData;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use RealRashid\SweetAlert\Facades\Alert;
 
-use function PHPUnit\Framework\isEmpty;
-
-class AdminController extends Controller
+class OpdController extends Controller
 {
-    protected $userRepository;
-    protected $anakRepository;
-    protected $fuzzyRepository;
-
-    public function __construct(
-        UserInterface $userRepository,
-        AnakInterface $anakRepository,
-        FuzzyInterface $fuzzyRepository
-    ) {
-        $this->middleware('auth');
-        $this->userRepository = $userRepository;
-        $this->anakRepository = $anakRepository;
-        $this->fuzzyRepository = $fuzzyRepository;
+    public function index()
+    {
+        //dd(auth()->user()->type);
+        return view('opd');
     }
-
-    /*------------------------------------------
---------------------------------------------
-ANAK
---------------------------------------------
---------------------------------------------*/
 
     public function anak()
     {
-        return view('admin.anak.index');
+        return view('opd.index');
     }
 
     public function getAnak()
@@ -61,98 +28,15 @@ ANAK
             ->addIndexColumn()
             ->editColumn('edit', function ($data) {
                 //$btn = '<a class="btn btn-warning" href="#" target="_blank">edit</a>';
-                $btn = '
-                <div class="dropdown">
-                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                   Edit
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="' . route('admin.editAnak', $data->id) . '">Edit Data Anak</a>
-                    <a class="dropdown-item" href="' . route('admin.showAnak', $data->id) . '">Show Data Anak</a>
-                    <a class="dropdown-item" href="' . route('admin.dataAnak', $data->id) . '">Tambah Data Berkala Anak</a>
-                </div>
-                </div>
+                $btn = '             
+                    <a class="btn btn-success" href="' . route('opd.showAnak', $data->id) . '">Show Data Anak</a>
                 ';
                 return $btn;
             })
             ->setRowId('id')
-            ->editColumn('delete', function ($data) {
-                $btn = ' <button onclick="deleteItemAnak(this)" class="btn btn-danger" data-id=' . $data->id . '>Delete</button>';
-                return $btn;
-            })
             ->rawColumns(['edit'])
-            ->rawColumns(['delete'])
             ->escapeColumns([])
             ->make(true);
-    }
-
-    public function getAnakAdmin()
-    {
-        $data = Anak::select('id', 'nama', 'nama_ibu', 'nama_ayah', 'jk', 'tempat_lahir', 'tgl_lahir');
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->editColumn('edit', function ($data) {
-                //$btn = '<a class="btn btn-warning" href="#" target="_blank">edit</a>';
-                $btn = '
-                <div class="dropdown">
-                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                   Edit
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="' . route('admin.editAnak', $data->id) . '">Edit Data Anak</a>
-                    <a class="dropdown-item" href="' . route('admin.showAnak', $data->id) . '">Show Data Anak</a>
-                    <a class="dropdown-item" href="' . route('admin.dataAnak', $data->id) . '">Tambah Data Berkala Anak</a>
-                </div>
-                </div>
-                ';
-                return $btn;
-            })
-            ->setRowId('id')
-            ->editColumn('delete', function ($data) {
-                $btn = ' <button onclick="deleteItemAnak(this)" class="btn btn-danger" data-id=' . $data->id . '>Delete</button>';
-                return $btn;
-            })
-            ->rawColumns(['edit'])
-            ->rawColumns(['delete'])
-            ->escapeColumns([])
-            ->make(true);
-    }
-
-    public function createAnak()
-    {
-        return view('admin.anak.create');
-    }
-
-    public function editAnak($id)
-    {
-        $anak = Anak::find($id);
-        $dt = DataAnak::where('id_anak', $id)->first();
-        $dataAnak = DataAnak::where('id_anak', $id)->get();
-        return view('admin.anak.edit', compact('anak', 'dt', 'dataAnak'));
-    }
-
-    public function updateAnak(Request $request, $id)
-    {
-        try {
-            $anak = $this->anakRepository->updateAnak($request, $id);
-            Alert::success('Anak', 'Berhasil Mengubah Data');
-            return redirect()->route('admin.anak');
-        } catch (\Throwable $e) {
-            Alert::error('Anak', 'Gagal Mengubah Data');
-            return redirect()->route('admin.anak');
-        }
-    }
-
-    public function storeAnak(storeAnakRequest $request)
-    {
-        try {
-            $anak = $this->anakRepository->storeAnak($request);
-            Alert::success('Anak', 'Berhasil Menambahkan Data');
-            return redirect()->route('admin.anak');
-        } catch (\Throwable $e) {
-            Alert::error('Anak', 'Gagal Menambahkan Data');
-            return redirect()->route('admin.anak');
-        }
     }
 
     public function showAnak($id)
@@ -300,7 +184,7 @@ ANAK
         }
         // dd($imtu,$resultFuzzyIMT_U);
 
-        return view('admin.anak.show', compact(
+        return view('opd.show', compact(
             'anak',
             'bbu',
             'tbu',
@@ -312,84 +196,6 @@ ANAK
             'resultFuzzyIMT_U'
         ))->with('hasilx', $hasilx);
     }
-
-
-    public function chartAnak($id)
-    {
-        $anak = Anak::find($id);
-        return view('admin.anak.chart', compact('anak'));
-    }
-
-    public function getChartAnak($id)
-    {
-        $tbAnak = DB::table('anak')
-            ->join('data_anak', 'anak.id', '=', 'data_anak.id_anak')
-            ->select('tb')
-            ->where('data_anak.id_anak', $id)
-            ->get();
-
-        $blnAnak = DB::table('anak')
-            ->join('data_anak', 'anak.id', '=', 'data_anak.id_anak')
-            ->select('bln')
-            ->where('data_anak.id_anak', $id)
-            ->get();
-
-        $bbAnak = DB::table('anak')
-            ->join('data_anak', 'anak.id', '=', 'data_anak.id_anak')
-            ->select('bb')
-            ->where('data_anak.id_anak', $id)
-            ->get();
-
-        return response()->json([
-            'tb' => $tbAnak,
-            'bln' => $blnAnak,
-            'bb' => $bbAnak,
-
-        ]);
-    }
-
-    public function destroyAnak($id)
-    {
-        $this->anakRepository->destroyAnak($id);
-        return response()->json([
-            'success' => true
-        ]);
-    }
-
-    public function dataAnak($id)
-    {
-        $anak = Anak::find($id);
-        $query = DB::table('data_anak')->where('id_anak', $id)->max('bln');
-        // $query === NULL ? $bulanSekarang = 0 : $bulanSekarang = $query + 1;
-        $bulanSekarang = $query + 1;
-        return view('admin.anak.data-anak', compact('anak', 'bulanSekarang'));
-    }
-
-    public function storeDataAnak(Request $request)
-    {
-        try {
-            $this->anakRepository->storeDataAnak($request);
-            return redirect()->route('admin.anak');
-            Alert::success('Data Anak', 'Berhasil Menambahkan Data');
-        } catch (\Throwable $e) {
-            return redirect()->route('admin.anak');
-            Alert::error('Data Anak', 'Berhasil Menambahkan Data');
-        }
-    }
-
-    public function updateDataAnak(Request $request, $id)
-    {
-        try {
-            $this->anakRepository->updateDataAnak($request, $id);
-            Alert::success('Anak', 'Berhasil Mengubah Data Berkala Anak');
-            return redirect()->route('admin.anak');
-        } catch (\Throwable $e) {
-            Alert::error('Anak', 'Gagal Mengubah Data Berkala Anak');
-            return redirect()->route('admin.anak');
-        }
-    }
-
-
 
     public function exportAllExcel()
     {
@@ -649,24 +455,6 @@ ANAK
                 'Fuzzy IMTU/U' => $fuzzyIMTU,
                 'IMTU/U' => $combinedData['hasilx'][$key]['imt'],
 
-                // 'Nama' => $combinedData['datax'][$key]['nama'],
-                // 'Nama Ibu' => $combinedData['datax'][$key]['nama_ibu'],
-                // 'Nama Ayah' => $combinedData['datax'][$key]['nama_ayah'],
-                // 'Jenis Kelamin' => ($combinedData['datax'][$key]['jk'] == 1) ? 'Laki-laki' : 'Perempuan',
-                // 'Tempat Lahir' => $combinedData['datax'][$key]['tempat_lahir'],
-                // 'Tanggal Lahir' => $combinedData['datax'][$key]['tgl_lahir'],
-                // 'Bulan' => $combinedData['datax'][$key]['bln'],
-                // 'Tinggi Badan' => $combinedData['datax'][$key]['tb'],
-                // 'Berat Badan' => $combinedData['datax'][$key]['bb'],
-                // 'BMI' => $combinedData['datax'][$key]['bb'] / pow(($combinedData['datax'][$key]['tb'] * 0.01), 2),
-                // 'Fuzzy BB/U' => $fuzzyBBU,
-                // 'BB/U' => $combinedData['hasilx'][$key]['bb'],
-                // 'Fuzzy TB/U' => $fuzzyTBU,
-                // 'TB/U' => $combinedData['hasilx'][$key]['tb'],
-                // 'Fuzzy BB/TB' => $fuzzyBBTB,
-                // 'BB/TB' => $combinedData['hasilx'][$key]['bt'],
-                // 'Fuzzy IMTU/U' => $fuzzyIMTU,
-                // 'IMTU/U' => $combinedData['hasilx'][$key]['imt'],
 
             ];
             array_push($resultData, $resultDatax);
@@ -678,113 +466,5 @@ ANAK
         return FastExcel($resultData)->download('data-anak.xlsx');
     }
 
-    public function fuzzy()
-    {
-        $fuzzy1 = Fuzzy::where('fuzzy_set', 1)->get();
-        $fuzzy2 = Fuzzy::where('fuzzy_set', 2)->get();
-        $fuzzy3 = Fuzzy::where('fuzzy_set', 3)->get();
-        $fuzzy4 = Fuzzy::where('fuzzy_set', 4)->get();
 
-        return view('admin.fuzzy.index', compact('fuzzy1', 'fuzzy2', 'fuzzy3', 'fuzzy4'));
-    }
-
-    public function storeFuzzy(Request $request)
-    {
-
-        try {
-            $this->fuzzyRepository->storeFuzzy($request);
-            Alert::success('Himpunan Fuzzy', 'Berhasil Menambahkan Data Himpunan Fuzzy');
-            return redirect()->route('admin.fuzzy');
-        } catch (\Throwable $e) {
-            Alert::error('Himpunan Fuzzy', 'Berhasil Menambahkan Data Himpunan Fuzzy');
-            return redirect()->route('admin.fuzzy');
-        }
-    }
-
-    public function updateFuzzy(Request $request, $id)
-    {
-        try {
-            $this->fuzzyRepository->updateFuzzy($request, $id);
-            Alert::success('Himpunan Fuzzy', 'Berhasil Mengupdate Data Himpunan Fuzzy');
-            return redirect()->route('admin.fuzzy');
-        } catch (\Throwable $e) {
-            Alert::error('Himpunan Fuzzy', 'Gagal Mengupdate Data Himpunan Fuzzy');
-            return redirect()->route('admin.fuzzy');
-        }
-    }
-
-    public function destroyFuzzy($id)
-    {
-        try {
-            $fuzzy = $this->fuzzyRepository->destroyFuzzy($id);
-            return redirect()->route('admin.fuzzy');
-        } catch (\Throwable $e) {
-            return redirect()->route('admin.fuzzy');
-        }
-    }
-    // 
-
-    /*------------------------------------------
---------------------------------------------
-All Super Admin Controller
---------------------------------------------
---------------------------------------------*/
-    public function superAdminHome()
-    {
-        return view('admin.dashboard.super_admin');
-    }
-    /*------------------------------------------
---------------------------------------------
-All Super Admin Controller
---------------------------------------------
---------------------------------------------*/
-    public function adminHome()
-    {
-        return view('admin.dashboard.admin');
-    }
-    /*------------------------------------------
---------------------------------------------
-All User Controller
---------------------------------------------
---------------------------------------------*/
-    public function user()
-    {
-        $user = User::all();
-        return view('admin.user.index', compact('user'));
-    }
-
-    public function storeUser(storeUserRequest $request)
-    {
-        try {
-            $user = $this->userRepository->storeUser($request);
-            return redirect()->route('admin.user');
-        } catch (\Throwable $e) {
-            return redirect()->route('admin.user');
-        }
-    }
-
-    public function editUser($id)
-    {
-        $user = User::find($id);
-        return view('admin.user.edit', compact('user'));
-    }
-
-    public function updateUser(storeUserRequest $request, $id)
-    {
-        try {
-            $user = $this->userRepository->updateUser($request, $id);
-            return redirect()->route('admin.user');
-        } catch (\Throwable $e) {
-            return redirect()->route('admin.user');
-        }
-    }
-    public function destroyUser($id)
-    {
-        try {
-            $user = $this->userRepository->destroyUser($id);
-            return redirect()->route('admin.user');
-        } catch (\Throwable $e) {
-            return redirect()->route('admin.user');
-        }
-    }
 }

@@ -16,9 +16,13 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->type == 'super-admin' || auth()->user()->type == 'admin' || auth()->user()->type == 'posyandu' ){
+        // if(auth()->user()->type == 'super-admin' || auth()->user()->type == 'admin' || auth()->user()->type == 'posyandu' ){
+        //     return $next($request);
+        // }
+        if(auth()->user()->type == 'admin'){
             return $next($request);
         }
+
 
         abort(403, 'Unauthorized action.');
     }

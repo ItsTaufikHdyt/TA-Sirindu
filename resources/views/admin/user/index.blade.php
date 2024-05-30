@@ -55,16 +55,14 @@ Data User
                             <th scope="row">{{ $data->name }}</th>
                             <th scope="row">{{ $data->email }}</th>
                             <th scope="row">
-                                @if($data->type == 'posyandu')
-                                    <span class="badge badge-primary">Admin Posyandu</span>
-                                @elseif($data->type == 'super-admin')
-                                    <span class="badge badge-info">Super Admin</span>
+                                @if($data->type == 'opd')
+                                    <span class="badge badge-primary">OPD</span>
                                 @elseif($data->type == 'admin')
                                     <span class="badge badge-success">Admin</span>
                                 @endif
                             </th>
                             <th scope="row">
-                                <a href="{{ route('super.admin.editUser',$data->id) }}"
+                                <a href="{{ route('admin.editUser',$data->id) }}"
                                     class="btn btn-warning">Edit</a>
                                 <button data-toggle="modal" data-target="#confirmationModal{{ $data->id }}"
                                     type="button" class="btn btn-danger">Delete</button>
