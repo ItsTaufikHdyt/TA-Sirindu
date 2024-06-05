@@ -37,7 +37,6 @@ Data User
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">NIK</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Email</th>
                         <th scope="col">Type</th>
@@ -51,7 +50,6 @@ Data User
                     @forelse($user as $data)
                         <tr>
                             <th scope="row">{{ $no++ }}</th>
-                            <th scope="row">{{ $data->nik }}</th>
                             <th scope="row">{{ $data->name }}</th>
                             <th scope="row">{{ $data->email }}</th>
                             <th scope="row">

@@ -56,7 +56,7 @@ Edit User
             <input type="checkbox" id="gantiPassword" name="centang" class="i-checks" onclick="passwordChange()"> Ganti Password<br>
             <div class="form-group">
                 <label>Password</label>
-                <input id="pass" name="password" class="form-control" type="text" disabled="true" placeholder="***********">
+                <input id="pass" name="password" class="form-control" type="password" disabled="true" placeholder="***********">
                 @error('password') <span class="text-danger">{{ $message }}</span>@enderror
             </div>
         </div>
