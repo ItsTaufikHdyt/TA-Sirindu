@@ -61,7 +61,7 @@ Show Data Anak
                 <td>Berat Badan</td>
                 <td>{{$hasil['berat']}}</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td>Berat Badan / Umur</td>
                 <td>{{$hasil['bb']}}</td>
             </tr>
@@ -76,7 +76,7 @@ Show Data Anak
             <tr>
                 <td>Indeks Massa Tubuh (IMT) / Umur</td>
                 <td>{{$hasil['imt']}}</td>
-            </tr>
+            </tr> --}}
             @endforeach
         </table>
     </div>
