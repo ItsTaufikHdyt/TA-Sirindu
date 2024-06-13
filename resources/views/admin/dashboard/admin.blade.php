@@ -21,8 +21,171 @@ Home
             Welcome back <div class="weight-600 font-30 text-blue">{{Auth::user()->name}}</div>
         </h4>
         <p class="font-18 max-width-600">
-            
         </p>
+    </div>
+</div>
+@endsection
+@section('content2')
+<div class="row">
+    <div class="col-xl-3 mb-30">
+        <div class="card-box height-100-p widget-style1">
+            <div class="card-header text-white">
+                <h4 class="mb-0">Berat Badan Menurut Umur</h4>
+            </div>
+            <div class="card-body">
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Berat Badan Sangat Kurang</h5>
+                        <span class="badge badge-danger">{{$totalBBSK}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Berat Badan Kurang</h5>
+                        <span class="badge badge-warning">{{$totalBBK}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Berat Badan Normal</h5>
+                        <span class="badge badge-success">{{$totalBBN}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Risiko Berat Badan Lebih</h5>
+                        <span class="badge badge-info">{{$totalRBBL}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 mb-30">
+        <div class="card-box height-100-p widget-style1">
+            <div class="card-header text-white">
+                <h4 class="mb-0">Tinggi Badan Menurut Umur</h4>
+            </div>
+            <div class="card-body">
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Sangat Pendek</h5>
+                        <span class="badge badge-danger">{{$totalSP}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Pendek</h5>
+                        <span class="badge badge-warning">{{$totalP}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Normal</h5>
+                        <span class="badge badge-success">{{$totalN}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Tinggi</h5>
+                        <span class="badge badge-info">{{$totalT}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 mb-30">
+        <div class="card-box height-100-p widget-style1">
+            <div class="card-header text-white">
+                <h4 class="mb-0">Berat Badan Menurut Tinggi Badan</h4>
+            </div>
+            <div class="card-body">
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Gizi Buruk</h5>
+                        <span class="badge badge-danger">{{$totalGBK}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Gizi Kurang</h5>
+                        <span class="badge badge-warning">{{$totalGK}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Gizi Baik</h5>
+                        <span class="badge badge-success">{{$totalGB}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Berisiko Gizi Lebih</h5>
+                        <span class="badge badge-info">{{$totalBGL}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Gizi Lebih</h5>
+                        <span class="badge badge-warning">{{$totalGL}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Obesitas</h5>
+                        <span class="badge badge-danger">{{$totalO}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-3 mb-30">
+        <div class="card-box height-100-p widget-style1">
+            <div class="card-header text-white">
+                <h4 class="mb-0">Indeks Massa Tubuh Menurut Umur</h4>
+            </div>
+            <div class="card-body">
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Gizi Buruk</h5>
+                        <span class="badge badge-danger">{{$totalGBK_IMT}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Gizi Kurang</h5>
+                        <span class="badge badge-warning">{{$totalGK_IMT}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Gizi Baik</h5>
+                        <span class="badge badge-success">{{$totalGB_IMT}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Berisiko Gizi Lebih</h5>
+                        <span class="badge badge-info">{{$totalBGL_IMT}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Gizi Lebih</h5>
+                        <span class="badge badge-warning">{{$totalGL_IMT}}</span>
+                    </div>
+                </div>
+                <div class="widget-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Obesitas</h5>
+                        <span class="badge badge-danger">{{$totalO_IMT}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

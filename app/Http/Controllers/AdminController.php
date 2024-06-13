@@ -535,11 +535,11 @@ ANAK
             'imtu' => $imtu,
             'resultFuzzyIMT_U' => $resultFuzzyIMT_U,
         ];
-        
+
 
         $resultData = [];
         foreach ($combinedData['datax'] as $key => $data) {
-            
+
             if ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBSK') {
                 $fuzzyBBU = 'Berat Badan Sangat Kurang';
             } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBK') {
@@ -587,7 +587,7 @@ ANAK
             } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'O') {
                 $fuzzyIMTU = 'Obesitas';
             }
-            
+
             $resultDatax = [
                 'Nama' => $combinedData['datax'][$key]['nama'],
                 'Nama Ibu' => $combinedData['datax'][$key]['nama_ibu'],
@@ -631,21 +631,21 @@ ANAK
                 'Fuzzy TB/U' => $fuzzyTBU,
                 'TB/U' => $combinedData['hasilx'][$key]['tb'],
 
-                'GBK' =>$combinedData['resultFuzzyBB_TB'][$key]['GBK'],
-                'GK' =>$combinedData['resultFuzzyBB_TB'][$key]['GK'],
-                'GB' =>$combinedData['resultFuzzyBB_TB'][$key]['GB'],
-                'BGL' =>$combinedData['resultFuzzyBB_TB'][$key]['BGL'],
-                'GL' =>$combinedData['resultFuzzyBB_TB'][$key]['GL'],
-                'O' =>$combinedData['resultFuzzyBB_TB'][$key]['O'],
+                'GBK' => $combinedData['resultFuzzyBB_TB'][$key]['GBK'],
+                'GK' => $combinedData['resultFuzzyBB_TB'][$key]['GK'],
+                'GB' => $combinedData['resultFuzzyBB_TB'][$key]['GB'],
+                'BGL' => $combinedData['resultFuzzyBB_TB'][$key]['BGL'],
+                'GL' => $combinedData['resultFuzzyBB_TB'][$key]['GL'],
+                'O' => $combinedData['resultFuzzyBB_TB'][$key]['O'],
                 'Fuzzy BB/TB' => $fuzzyBBTB,
-                'BB/TB' =>$combinedData['hasilx'][$key]['bt'],
+                'BB/TB' => $combinedData['hasilx'][$key]['bt'],
 
-                'GBK-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GBK'],
-                'GK-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GK'],
-                'GB-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GB'],
-                'BGL-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['BGL'],
-                'GL-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['GL'],
-                'O-IMT' =>$combinedData['resultFuzzyIMT_U'][$key]['O'],
+                'GBK-IMT' => $combinedData['resultFuzzyIMT_U'][$key]['GBK'],
+                'GK-IMT' => $combinedData['resultFuzzyIMT_U'][$key]['GK'],
+                'GB-IMT' => $combinedData['resultFuzzyIMT_U'][$key]['GB'],
+                'BGL-IMT' => $combinedData['resultFuzzyIMT_U'][$key]['BGL'],
+                'GL-IMT' => $combinedData['resultFuzzyIMT_U'][$key]['GL'],
+                'O-IMT' => $combinedData['resultFuzzyIMT_U'][$key]['O'],
                 'Fuzzy IMTU/U' => $fuzzyIMTU,
                 'IMTU/U' => $combinedData['hasilx'][$key]['imt'],
 
@@ -673,7 +673,7 @@ ANAK
 
             //$resultData[] = $resultDatax;
         }
-     // dd(count($resultData),$resultData[10]);
+        // dd(count($resultData),$resultData[10]);
 
         return FastExcel($resultData)->download('data-anak.xlsx');
     }
@@ -740,7 +740,285 @@ All Super Admin Controller
 --------------------------------------------*/
     public function adminHome()
     {
-        return view('admin.dashboard.admin');
+        $data = AllData::all();
+        $datax = AllData::all()->toArray();
+        $hasilx = getZscore($data);
+
+        //BB/U ->Median ->Simpangan Baku ->ZScore BB/U
+        $bbu = getBB_U($data);
+        //TB/U ->Median ->Simpangan Baku ->ZScore TB/U
+        $tbu = getTB_U($data);
+        //BB/TB ->Median ->Simpangan Baku ->ZScore BB/TB
+        $bbtb = getBB_TB($data);
+        //IMT/U ->Median ->Simpangan Baku ->ZScore IMT/U
+        $imtu = getIMT_U($data);
+
+        //****************** himpunan fuzzy ******************
+        //BB/U
+        $fuzzySet1 =  DB::table('fuzzy')
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 1)
+            ->get();
+        //TB/U PB/U
+        $fuzzySet2 =  DB::table('fuzzy')
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 2)
+            ->get();
+        //BB/TB BB/PB
+        $fuzzySet3 =  DB::table('fuzzy')
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 3)
+            ->get();
+        //IMT/U
+        $fuzzySet4 =  DB::table('fuzzy')
+            ->select('name', 'a', 'b', 'c', 'd', 'type', 'fuzzy_set')
+            ->where('fuzzy_set', 4)
+            ->get();
+
+        //******************************** FUZZY BB/U ****************************************//
+        //Menghitung Derajat Fuzzy Ke Setiap Himpunan
+        $resultFuzzyBB_U = [];
+        foreach ($bbu as $key => $bbuValue) {
+
+            $dataFuzzyBB_U = fuzzyBB_U($bbuValue['bbu'], $fuzzySet1);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyBB_U);
+
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyBB_U);
+
+            // Menyimpan data tertinggi ke dalam array resultFuzzyBB_U
+            $resultFuzzyBB_U[] = [
+                'BBSK' => $dataFuzzyBB_U['BBSK'],
+                'BBK' => $dataFuzzyBB_U['BBK'],
+                'BBN' => $dataFuzzyBB_U['BBN'],
+                'RBBL' => $dataFuzzyBB_U['RBBL'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+
+        //******************************** FUZZY TB/U ****************************************//
+        //Menghitung Derajat Fuzzy Ke Setiap Himpunan
+        $resultFuzzyTB_U = [];
+        foreach ($tbu as $key => $tbuValue) {
+
+            $dataFuzzyTB_U = fuzzyTB_U($tbuValue['tbu'], $fuzzySet2);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyTB_U);
+
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyTB_U);
+
+            // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
+            $resultFuzzyTB_U[] = [
+                'SP' => $dataFuzzyTB_U['SP'],
+                'P' => $dataFuzzyTB_U['P'],
+                'N' => $dataFuzzyTB_U['N'],
+                'T' => $dataFuzzyTB_U['T'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+        //******************************** FUZZY BB/TB ****************************************//
+        //Menghitung Derajat Fuzzy Ke Setiap Himpunan
+        $resultFuzzyBB_TB = [];
+        foreach ($bbtb as $key => $bbtbValue) {
+
+            $dataFuzzyBB_TB = fuzzyBB_TB($bbtbValue['bbtb'], $fuzzySet3);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyBB_TB);
+
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyBB_TB);
+
+            // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
+            $resultFuzzyBB_TB[] = [
+                'GBK' => $dataFuzzyBB_TB['GBK'],
+                'GK' => $dataFuzzyBB_TB['GK'],
+                'GB' => $dataFuzzyBB_TB['GB'],
+                'BGL' => $dataFuzzyBB_TB['BGL'],
+                'GL' => $dataFuzzyBB_TB['GL'],
+                'O' => $dataFuzzyBB_TB['O'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+        // dd($bbtb[10],$resultFuzzyBB_TB[10]);
+        //******************************** FUZZY IMT/U ****************************************//
+        //Menghitung Derajat Fuzzy Ke Setiap Himpunan
+        $resultFuzzyIMT_U = [];
+        foreach ($imtu as $key => $imtValue) {
+
+            $dataFuzzyIMT_U = fuzzyBB_TB($imtValue['imtu'], $fuzzySet4);
+            // Mendapatkan nilai maksimum dari array fuzzy
+            $maxValue = max($dataFuzzyIMT_U);
+
+            // Mendapatkan kunci (key) yang terkait dengan nilai maksimum
+            $maxKey = array_search($maxValue, $dataFuzzyIMT_U);
+
+            // Menyimpan data tertinggi ke dalam array resultFuzzyTB_U
+            $resultFuzzyIMT_U[] = [
+                'GBK' => $dataFuzzyIMT_U['GBK'],
+                'GK' => $dataFuzzyIMT_U['GK'],
+                'GB' => $dataFuzzyIMT_U['GB'],
+                'BGL' => $dataFuzzyIMT_U['BGL'],
+                'GL' => $dataFuzzyIMT_U['GL'],
+                'O' => $dataFuzzyIMT_U['O'],
+                'maxKey' => $maxKey,
+                'maxValue' => $maxValue
+            ];
+        }
+        $combinedData = [
+            'datax' => $datax,
+            'hasilx' => $hasilx,
+            'bbu' => $bbu,
+            'resultFuzzyBB_U' => $resultFuzzyBB_U,
+            'tbu' => $tbu,
+            'resultFuzzyTB_U' => $resultFuzzyTB_U,
+            'bbtb' => $bbtb,
+            'resultFuzzyBB_TB' => $resultFuzzyBB_TB,
+            'imtu' => $imtu,
+            'resultFuzzyIMT_U' => $resultFuzzyIMT_U,
+        ];
+
+
+        $resultData = [];
+        foreach ($combinedData['datax'] as $key => $data) {
+
+            if ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBSK') {
+                $fuzzyBBU = 'Berat Badan Sangat Kurang';
+            } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBK') {
+                $fuzzyBBU = 'Berat Badan Kurang';
+            } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBN') {
+                $fuzzyBBU = 'Berat Badan Normal';
+            } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'RBBL') {
+                $fuzzyBBU = 'Risiko Berat Badan Lebih';
+            }
+            //tbu
+            if ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'SP') {
+                $fuzzyTBU = 'Sangat Pendek';
+            } elseif ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'P') {
+                $fuzzyTBU = 'Pendek';
+            } elseif ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'N') {
+                $fuzzyTBU = 'Normal';
+            } elseif ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'T') {
+                $fuzzyTBU = 'Tingi';
+            }
+            //bbtb
+            if ($combinedData['resultFuzzyBB_TB'][$key]['maxKey']  == 'GBK') {
+                $fuzzyBBTB = 'Gizi Buruk';
+            } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GK') {
+                $fuzzyBBTB = 'Gizi Kurang';
+            } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GB') {
+                $fuzzyBBTB = 'Gizi Baik';
+            } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'BGL') {
+                $fuzzyBBTB = 'Berisiko Gizi Berlebih';
+            } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GL') {
+                $fuzzyBBTB = 'Gizi Lebih';
+            } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'O') {
+                $fuzzyBBTB = 'Obesitas';
+            }
+            //imtu
+            if ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GBK') {
+                $fuzzyIMTU  = 'Gizi Buruk';
+            } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GK') {
+                $fuzzyIMTU = 'Gizi Kurang';
+            } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GB') {
+                $fuzzyIMTU = 'Gizi Baik';
+            } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'BGL') {
+                $fuzzyIMTU = 'Berisiko Gizi Berlebih';
+            } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GL') {
+                $fuzzyIMTU = 'Gizi Lebih';
+            } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'O') {
+                $fuzzyIMTU = 'Obesitas';
+            }
+
+            // Inisialisasi variabel total untuk setiap kategori
+            $totalBBSK = $totalBBK = $totalBBN = $totalRBBL = 0;
+            $totalSP = $totalP = $totalN = $totalT = 0;
+            $totalGBK = $totalGK = $totalGB = $totalBGL = $totalGL = $totalO = 0;
+            $totalGBK_IMT = $totalGK_IMT = $totalGB_IMT = $totalBGL_IMT = $totalGL_IMT = $totalO_IMT = 0;
+
+            foreach ($combinedData['datax'] as $key => $data) {
+                // ... (your existing code)
+
+                // Increment total for each category
+                if ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBSK') {
+                    $totalBBSK++;
+                } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBK') {
+                    $totalBBK++;
+                } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'BBN') {
+                    $totalBBN++;
+                } elseif ($combinedData['resultFuzzyBB_U'][$key]['maxKey'] == 'RBBL') {
+                    $totalRBBL++;
+                }
+
+                if ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'SP') {
+                    $totalSP++;
+                } elseif ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'P') {
+                    $totalP++;
+                } elseif ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'N') {
+                    $totalN++;
+                } elseif ($combinedData['resultFuzzyTB_U'][$key]['maxKey'] == 'T') {
+                    $totalT++;
+                }
+
+                if ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GBK') {
+                    $totalGBK++;
+                } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GK') {
+                    $totalGK++;
+                } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GB') {
+                    $totalGB++;
+                } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'BGL') {
+                    $totalBGL++;
+                } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'GL') {
+                    $totalGL++;
+                } elseif ($combinedData['resultFuzzyBB_TB'][$key]['maxKey'] == 'O') {
+                    $totalO++;
+                }
+
+                if ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GBK') {
+                    $totalGBK_IMT++;
+                } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GK') {
+                    $totalGK_IMT++;
+                } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GB') {
+                    $totalGB_IMT++;
+                } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'BGL') {
+                    $totalBGL_IMT++;
+                } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'GL') {
+                    $totalGL_IMT++;
+                } elseif ($combinedData['resultFuzzyIMT_U'][$key]['maxKey'] == 'O') {
+                    $totalO_IMT++;
+                }
+
+                // ... (your existing code)
+            }
+           // dd( $totalO_IMT);
+        }
+
+        return view('admin.dashboard.admin',compact(
+            'totalBBSK',
+            'totalBBK',
+            'totalBBN',
+            'totalRBBL',
+            'totalSP',
+            'totalP',
+            'totalN',
+            'totalT',
+            'totalGBK',
+            'totalGK',
+            'totalGB',
+            'totalBGL',
+            'totalGL',
+            'totalO',
+            'totalGBK_IMT',
+            'totalGK_IMT',
+            'totalGB_IMT',
+            'totalBGL_IMT',
+            'totalGL_IMT',
+            'totalO_IMT',
+        ));
     }
     /*------------------------------------------
 --------------------------------------------

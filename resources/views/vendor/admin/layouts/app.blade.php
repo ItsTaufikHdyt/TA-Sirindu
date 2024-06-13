@@ -25,6 +25,7 @@
                 <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
                     @yield('content')
                 </div>
+                @yield('content2')
             </div>
             <div class="footer-wrap pd-20 mb-20 card-box">
            SPK Gizi  © 2024 Taufik Hidayat 
