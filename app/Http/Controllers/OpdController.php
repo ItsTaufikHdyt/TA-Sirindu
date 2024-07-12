@@ -154,7 +154,7 @@ class OpdController extends Controller
             'resultFuzzyIMT_U' => $resultFuzzyIMT_U,
         ];
 
-
+        //menghitung data 
         $resultData = [];
         foreach ($combinedData['datax'] as $key => $data) {
 
@@ -266,7 +266,38 @@ class OpdController extends Controller
 
                 // ... (your existing code)
             }
-           // dd( $totalO_IMT);
+           
+        }
+
+        //menghitung persentase data
+        $totalData = count($combinedData['datax']);
+
+        $totals = [
+            'BBSK' => $totalBBSK,
+            'BBK' => $totalBBK,
+            'BBN' => $totalBBN,
+            'RBBL' => $totalRBBL,
+            'SP' => $totalSP,
+            'P' => $totalP,
+            'N' => $totalN,
+            'T' => $totalT,
+            'GBK' => $totalGBK,
+            'GK' => $totalGK,
+            'GB' => $totalGB,
+            'BGL' => $totalBGL,
+            'GL' => $totalGL,
+            'O' => $totalO,
+            'GBK_IMT' => $totalGBK_IMT,
+            'GK_IMT' => $totalGK_IMT,
+            'GB_IMT' => $totalGB_IMT,
+            'BGL_IMT' => $totalBGL_IMT,
+            'GL_IMT' => $totalGL_IMT,
+            'O_IMT' => $totalO_IMT,
+        ];
+
+        $percentages = [];
+        foreach ($totals as $key => $value) {
+            $percentages[$key] = ($value / $totalData) * 100;
         }
 
         return view('opd',compact(
@@ -290,6 +321,7 @@ class OpdController extends Controller
             'totalBGL_IMT',
             'totalGL_IMT',
             'totalO_IMT',
+            'percentages',
         ));
     }
 

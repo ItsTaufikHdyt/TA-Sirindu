@@ -57,6 +57,8 @@ Home
                         <span class="badge badge-info">{{$totalRBBL}}</span>
                     </div>
                 </div>
+                <hr>
+                <canvas id="chartBBU"></canvas>
             </div>
         </div>
     </div>
@@ -91,6 +93,8 @@ Home
                         <span class="badge badge-info">{{$totalT}}</span>
                     </div>
                 </div>
+                <hr>
+                <canvas id="chartTBU"></canvas>
             </div>
         </div>
     </div>
@@ -137,10 +141,11 @@ Home
                         <span class="badge badge-danger">{{$totalO}}</span>
                     </div>
                 </div>
+                <hr>
+                <canvas id="chartBBTB"></canvas>
             </div>
         </div>
     </div>
-
 
     <div class="col-xl-3 mb-30">
         <div class="card-box height-100-p widget-style1">
@@ -184,8 +189,146 @@ Home
                         <span class="badge badge-danger">{{$totalO_IMT}}</span>
                     </div>
                 </div>
+                <hr>
+                <canvas id="chartIMTU"></canvas>
             </div>
         </div>
     </div>
+
 </div>
+@endsection
+@section('custom_scripts')
+<script>
+    const ctxBBU = document.getElementById('chartBBU').getContext('2d');
+    const chartBBU = new Chart(ctxBBU, {
+        type: 'pie',
+        data: {
+            labels: ['Berat Badan Sangat Kurang', 'Berat Badan Kurang', 'Berat Badan Normal', 'Risiko Berat Badan Lebih'],
+            datasets: [{
+                label: 'Persentase BB/U',
+                data: [
+                    {{ $percentages['BBSK'] }},
+                    {{ $percentages['BBK'] }},
+                    {{ $percentages['BBN'] }},
+                    {{ $percentages['RBBL'] }}
+                ],
+                backgroundColor: [
+                    '#dc3545',
+                    '#ffc107',
+                    '#28a745',
+                    '#17a2b8'
+                ],
+                borderColor: [
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff'
+                ],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    const ctxTBU = document.getElementById('chartTBU').getContext('2d');
+    const chartTBU = new Chart(ctxTBU, {
+        type: 'pie',
+        data: {
+            labels: ['Sangat Pendek', 'Pendek', 'Normal', 'Tinggi'],
+            datasets: [{
+                label: 'Persentase TB/U',
+                data: [
+                    {{ $percentages['SP'] }},
+                    {{ $percentages['P'] }},
+                    {{ $percentages['N'] }},
+                    {{ $percentages['T'] }}
+                ],
+                backgroundColor: [
+                    '#dc3545',
+                    '#ffc107',
+                    '#28a745',
+                    '#17a2b8'
+                ],
+                borderColor: [
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff'
+                ],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    const ctxBBTB = document.getElementById('chartBBTB').getContext('2d');
+    const chartBBTB = new Chart(ctxBBTB, {
+        type: 'pie',
+        data: {
+            labels: ['Gizi Buruk', 'Gizi Kurang', 'Gizi Baik', 'Berisiko Gizi Lebih', 'Gizi Lebih', 'Obesitas'],
+            datasets: [{
+                label: 'Persentase BB/TB',
+                data: [
+                    {{ $percentages['GBK'] }},
+                    {{ $percentages['GK'] }},
+                    {{ $percentages['GB'] }},
+                    {{ $percentages['BGL'] }},
+                    {{ $percentages['GL'] }},
+                    {{ $percentages['O'] }}
+                ],
+                backgroundColor: [
+                    '#dc3545',
+                    '#ffc107',
+                    '#28a745',
+                    '#17a2b8',
+                    '#ffc107',
+                    '#dc3545'
+                ],
+                borderColor: [
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff'
+                ],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    const ctxIMTU = document.getElementById('chartIMTU').getContext('2d');
+    const chartIMTU = new Chart(ctxIMTU, {
+        type: 'pie',
+        data: {
+            labels: ['Gizi Buruk', 'Gizi Kurang', 'Gizi Baik', 'Berisiko Gizi Lebih', 'Gizi Lebih', 'Obesitas'],
+            datasets: [{
+                label: 'Persentase IMT/U',
+                data: [
+                    {{ $percentages['GBK_IMT'] }},
+                    {{ $percentages['GK_IMT'] }},
+                    {{ $percentages['GB_IMT'] }},
+                    {{ $percentages['BGL_IMT'] }},
+                    {{ $percentages['GL_IMT'] }},
+                    {{ $percentages['O_IMT'] }}
+                ],
+                backgroundColor: [
+                    '#dc3545',
+                    '#ffc107',
+                    '#28a745',
+                    '#17a2b8',
+                    '#ffc107',
+                    '#dc3545'
+                ],
+                borderColor: [
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff',
+                    '#ffffff'
+                ],
+                borderWidth: 1
+            }]
+        }
+    });
+</script>
 @endsection

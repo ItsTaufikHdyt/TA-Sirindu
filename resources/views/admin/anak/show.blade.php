@@ -210,13 +210,13 @@ Show Data Anak
                                 <div class="col">
                                     <label for="">Status Gizi Balita Indeks BB/U</label>
                                     @if($fuzzyDataBBU['maxKey'] == 'BBSK')
-                                    <input type="text" value="Berat Badan Sangat Kurang" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Berat Badan Sangat Kurang" class="form-control" readonly>
                                     @elseif($fuzzyDataBBU['maxKey'] == 'BBK')
-                                    <input type="text" value="Berat Badan Kurang" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Berat Badan Kurang" class="form-control" readonly>
                                     @elseif($fuzzyDataBBU['maxKey'] == 'BBN')
-                                    <input type="text" value="Berat Badan Normal" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Berat Badan Normal" class="form-control" readonly>
                                     @elseif($fuzzyDataBBU['maxKey'] == 'RBBL')
-                                    <input type="text" value="Risiko Berat Badan Lebih" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Risiko Berat Badan Lebih" class="form-control" readonly>
                                     @endif
                                 </div>
                             </div>
@@ -251,13 +251,13 @@ Show Data Anak
                                 <div class="col">
                                     <label for="">Status Gizi Balita Indeks TB/U</label>
                                     @if($fuzzyDataTBU['maxKey'] == 'SP')
-                                    <input type="text" value="Sangat Pendek" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Sangat Pendek" class="form-control" readonly>
                                     @elseif($fuzzyDataTBU['maxKey'] == 'P')
-                                    <input type="text" value="Pendek" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Pendek" class="form-control" readonly>
                                     @elseif($fuzzyDataTBU['maxKey'] == 'N')
-                                    <input type="text" value="Normal" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Normal" class="form-control" readonly>
                                     @elseif($fuzzyDataTBU['maxKey'] == 'T')
-                                    <input type="text" value="Tinggi" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Tinggi" class="form-control" readonly>
                                     @endif
                                 </div>
                             </div>
@@ -301,17 +301,17 @@ Show Data Anak
                                 <div class="col">
                                     <label for="">Status Gizi Balita Indeks BB/TB</label>
                                     @if($fuzzyDataBBTB['maxKey'] == 'GBK')
-                                    <input type="text" value="Gizi Buruk" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Gizi Buruk" class="form-control" readonly>
                                     @elseif($fuzzyDataBBTB['maxKey'] == 'GK')
-                                    <input type="text" value="Gizi Kurang" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Gizi Kurang" class="form-control" readonly>
                                     @elseif($fuzzyDataBBTB['maxKey'] == 'GB')
-                                    <input type="text" value="Gizi Baik" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Gizi Baik" class="form-control" readonly>
                                     @elseif($fuzzyDataBBTB['maxKey'] == 'BGL')
-                                    <input type="text" value="Berisiko Gizi Berlebih" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Berisiko Gizi Berlebih" class="form-control" readonly>
                                     @elseif($fuzzyDataBBTB['maxKey'] == 'GL')
-                                    <input type="text" value="Gizi lebih" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Gizi lebih" class="form-control" readonly>
                                     @elseif($fuzzyDataBBTB['maxKey'] == 'O')
-                                    <input type="text" value="Obesitas" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Obesitas" class="form-control" readonly>
                                     @endif
                                 </div>
                             </div>
@@ -355,17 +355,17 @@ Show Data Anak
                                 <div class="col">
                                     <label for="">Status Gizi Balita Indeks IMT/U </label>
                                     @if($fuzzyDataIMTU['maxKey'] == 'GBK')
-                                    <input type="text" value="Gizi Buruk" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Gizi Buruk" class="form-control" readonly>
                                     @elseif($fuzzyDataIMTU['maxKey'] == 'GK')
-                                    <input type="text" value="Gizi Kurang" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Gizi Kurang" class="form-control" readonly>
                                     @elseif($fuzzyDataIMTU['maxKey'] == 'GB')
-                                    <input type="text" value="Gizi Baik" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Gizi Baik" class="form-control" readonly>
                                     @elseif($fuzzyDataIMTU['maxKey'] == 'BGL')
-                                    <input type="text" value="Berisiko Gizi Berlebih" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Berisiko Gizi Berlebih" class="form-control" readonly>
                                     @elseif($fuzzyDataIMTU['maxKey'] == 'GL')
-                                    <input type="text" value="Gizi lebih" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Gizi lebih" class="form-control" readonly>
                                     @elseif($fuzzyDataIMTU['maxKey'] == 'O')
-                                    <input type="text" value="Obesitas" class="form-control" readonly>
+                                    <input type="text" id="statusGizi" value="Obesitas" class="form-control" readonly>
                                     @endif
                                 </div>
                             </div>

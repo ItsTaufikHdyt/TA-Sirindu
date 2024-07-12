@@ -11,6 +11,7 @@
 <script src="{{asset('admin/src/plugins/jquery-steps/jquery.steps.js')}}"></script>
 <script src="{{asset('admin/vendors/scripts/steps-setting.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @include('sweetalert::alert')
 @stack('js')
 @yield('custom_scripts')
